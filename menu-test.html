@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Profile Test</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .menu-item { padding: 10px; margin: 5px 0; border: 1px solid #ddd; }
+        .hidden { display: none !important; }
+        .visible { display: block !important; background: #e8f5e8; }
+        button { padding: 10px 20px; margin: 10px 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h2>User Profile Menu Test</h2>
+    
+    <h3>Current State:</h3>
+    <div id="status"></div>
+    
+    <h3>Menu Items:</h3>
+    <div class="menu-item" id="userLoginLink">🔐 User Login</div>
+    <div class="menu-item" id="userRegisterLink">📝 User Register</div>
+    <div class="menu-item hidden" id="userProfileLink">👤 My Profile</div>
+    <div class="menu-item hidden" id="userLogoutLink">🚪 Logout</div>
+    
+    <h3>Actions:</h3>
+    <button onclick="simulateLogin()">Simulate Login</button>
+    <button onclick="simulateLogout()">Simulate Logout</button>
+    <button onclick="updateMenuState()">Update Menu</button>
+    <button onclick="clearStorage()">Clear Storage</button>
+    <button onclick="goToMainPortfolio()">Go to Main Portfolio</button>
+    
+    <script>
+        function updateStatus() {
+            const userLoggedIn = localStorage.getItem('userLoggedIn');
+            const userName = localStorage.getItem('userName');
+            const userEmail = localStorage.getItem('userEmail');
+            
+            document.getElementById('status').innerHTML = `
+                <strong>Login Status:</strong> ${userLoggedIn || 'Not set'}<br>
+                <strong>User Name:</strong> ${userName || 'Not set'}<br>
+                <strong>User Email:</strong> ${userEmail || 'Not set'}
+            `;
+        }
+        
+        function updateMenuState() {
+            console.log('Updating menu state...');
+            const userLoggedIn = localStorage.getItem('userLoggedIn');
+            
+            const profileLink = document.getElementById('userProfileLink');
+            const logoutLink = document.getElementById('userLogoutLink');
+            const loginLink = document.getElementById('userLoginLink');
+            const registerLink = document.getElementById('userRegisterLink');
+            
+            if (userLoggedIn === 'true') {
+                console.log('User is logged in - showing profile menu');
+                profileLink.classList.remove('hidden');
+                profileLink.classList.add('visible');
+                logoutLink.classList.remove('hidden');
+                logoutLink.classList.add('visible');
+                
+                loginLink.classList.add('hidden');
+                loginLink.classList.remove('visible');
+                registerLink.classList.add('hidden');
+                registerLink.classList.remove('visible');
+            } else {
+                console.log('User is not logged in - hiding profile menu');
+                profileLink.classList.add('hidden');
+                profileLink.classList.remove('visible');
+                logoutLink.classList.add('hidden');
+                logoutLink.classList.remove('visible');
+                
+                loginLink.classList.remove('hidden');
+                loginLink.classList.add('visible');
+                registerLink.classList.remove('hidden');
+                registerLink.classList.add('visible');
+            }
+            
+            updateStatus();
+        }
+        
+        function simulateLogin() {
+            localStorage.setItem('userLoggedIn', 'true');
+            localStorage.setItem('userName', 'Test User');
+            localStorage.setItem('userEmail', 'test@example.com');
+            
+            updateMenuState();
+            alert('✅ Login simulated!');
+        }
+        
+        function simulateLogout() {
+            localStorage.removeItem('userLoggedIn');
+            localStorage.removeItem('userName');
+            localStorage.removeItem('userEmail');
+            
+            updateMenuState();
+            alert('🚪 Logged out!');
+        }
+        
+        function clearStorage() {
+            localStorage.clear();
+            updateMenuState();
+            alert('🗑️ Storage cleared!');
+        }
+        
+        function goToMainPortfolio() {
+            window.open('index.html', '_blank');
+        }
+        
+        // Initialize on load
+        $(document).ready(function() {
+            updateMenuState();
+        });
+    </script>
+</body>
+</html>

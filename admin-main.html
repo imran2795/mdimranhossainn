@@ -1,0 +1,2945 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Admin Panel - Complete Website Control</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        /* Header */
+        .admin-header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 15px 30px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .admin-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .admin-title img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid #667eea;
+        }
+
+        .admin-title h1 {
+            color: #333;
+            font-size: 24px;
+        }
+
+        .admin-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
+        .btn-success { background: #28a745; color: white; }
+        .btn-warning { background: #ffc107; color: #212529; }
+        .btn-danger { background: #dc3545; color: white; }
+        .btn-info { background: #17a2b8; color: white; }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        /* Main Content */
+        .admin-container {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            min-height: calc(100vh - 80px);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 20px 0;
+            box-shadow: 2px 0 20px rgba(0,0,0,0.1);
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin: 5px 0;
+        }
+
+        .sidebar-menu a {
+            display: block;
+            padding: 15px 25px;
+            color: #555;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+
+        .sidebar-menu a:hover, .sidebar-menu a.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-left-color: #fff;
+        }
+
+        .sidebar-menu i {
+            width: 20px;
+            margin-right: 10px;
+        }
+
+        /* Content Area */
+        .content-area {
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            overflow-y: auto;
+        }
+
+        .content-section {
+            display: none;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
+        .content-section.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #667eea;
+            color: #333;
+        }
+
+        /* Dashboard Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1), transparent);
+            pointer-events: none;
+        }
+
+        .stat-card i {
+            font-size: 3em;
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+
+        .stat-card h3 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .stat-card p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        /* Form Styles */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input, 
+        .form-group textarea, 
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus, 
+        .form-group textarea:focus, 
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+            border: 1px solid #e1e5e9;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f8f9fa;
+        }
+
+        /* Tables */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+        }
+
+        .data-table th, .data-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e1e5e9;
+        }
+
+        .data-table th {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            font-weight: 600;
+        }
+
+        .data-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        /* Alerts */
+        .alert {
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            display: none;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .alert.show { display: flex; }
+        .alert.success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .alert.error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .alert.info { background: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+
+        /* Gallery Grid */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        .gallery-item {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+
+        .gallery-item-info {
+            padding: 15px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .admin-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                order: 2;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Advanced User Management Styles */
+        .user-table-wrapper {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow-x: auto;
+        }
+        
+        .user-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        .user-table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 10px;
+            text-align: left;
+            font-weight: 600;
+            border: none;
+        }
+        
+        .user-table th:first-child {
+            border-radius: 10px 0 0 0;
+        }
+        
+        .user-table th:last-child {
+            border-radius: 0 10px 0 0;
+        }
+        
+        .user-table td {
+            padding: 12px 10px;
+            border-bottom: 1px solid #eee;
+            vertical-align: middle;
+        }
+        
+        .user-table tbody tr {
+            transition: all 0.3s ease;
+        }
+        
+        .user-table tbody tr:hover {
+            background: linear-gradient(135deg, #f8f9ff 0%, #f3f4ff 100%);
+            transform: translateX(2px);
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #667eea;
+        }
+        
+        .user-status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .status-active { background: #d4edda; color: #155724; }
+        .status-inactive { background: #f8d7da; color: #721c24; }
+        .status-suspended { background: #fff3cd; color: #856404; }
+        .status-blocked { background: #d1ecf1; color: #0c5460; }
+        
+        .user-type-badge {
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .type-admin { background: #dc3545; color: white; }
+        .type-premium_user { background: #ffc107; color: #212529; }
+        .type-regular_user { background: #6c757d; color: white; }
+        
+        .user-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .user-actions .btn {
+            padding: 6px 10px;
+            font-size: 12px;
+            min-width: auto;
+        }
+        
+        .user-stats-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .user-stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .user-stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+        
+        .user-stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .user-stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+        
+        .user-stat-label {
+            color: #666;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 14px;
+        }
+        
+        .user-filters {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+        }
+        
+        .filter-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            align-items: end;
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .filter-group label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        
+        .filter-group select,
+        .filter-group input {
+            padding: 10px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .filter-group select:focus,
+        .filter-group input:focus {
+            border-color: #667eea;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .bulk-actions-bar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .bulk-actions-bar.active {
+            display: flex;
+        }
+        
+        .selected-count {
+            font-weight: 600;
+        }
+        
+        .bulk-action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .bulk-action-buttons .btn {
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 8px 15px;
+            font-size: 14px;
+        }
+        
+        .bulk-action-buttons .btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="loginScreen" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); z-index: 10000;">
+        <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+            <div style="background: white; padding: 50px; border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); max-width: 450px; width: 90%;">
+                <div style="text-align: center; margin-bottom: 40px;">
+                    <img src="images/about-me.jpg" alt="Admin" style="width: 80px; height: 80px; border-radius: 50%; margin-bottom: 20px;" 
+                         onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iODAiIHZpZXdCb3g9IjAgMCA4MCA4MCIgZmlsbD0ibm9uZSI+PGNpcmNsZSBjeD0iNDAiIGN5PSI0MCIgcj0iNDAiIGZpbGw9IiM2NjdlZWEiLz48L3N2Zz4='">
+                    <h2 style="color: #333; margin: 0; font-size: 28px;">🔐 Admin Login</h2>
+                    <p style="color: #666; margin: 10px 0 0 0;">Enter your credentials to access admin panel</p>
+                </div>
+                
+                <form id="loginForm" onsubmit="adminLogin(event)">
+                    <div style="margin-bottom: 25px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #333;">
+                            <i class="fas fa-user"></i> Username
+                        </label>
+                        <input type="text" id="loginUsername" placeholder="Enter admin username" required
+                               style="width: 100%; padding: 15px; border: 2px solid #ddd; border-radius: 10px; font-size: 16px;">
+                    </div>
+                    
+                    <div style="margin-bottom: 30px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #333;">
+                            <i class="fas fa-lock"></i> Password
+                        </label>
+                        <div style="position: relative;">
+                            <input type="password" id="loginPassword" placeholder="Enter admin password" required
+                                   style="width: 100%; padding: 15px; border: 2px solid #ddd; border-radius: 10px; font-size: 16px; padding-right: 45px;">
+                            <button type="button" onclick="togglePasswordVisibility('loginPassword')" 
+                                    style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #666; cursor: pointer;">
+                                <i class="fas fa-eye" id="loginPasswordEye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" style="width: 100%; padding: 15px; font-size: 18px; margin-bottom: 20px;">
+                        <i class="fas fa-sign-in-alt"></i> Login to Admin Panel
+                    </button>
+                </form>
+                
+                <div style="text-align: center;">
+                    <button onclick="showForgotPassword()" style="background: none; border: none; color: #667eea; cursor: pointer; text-decoration: underline;">
+                        Forgot Password?
+                    </button>
+                    <br><br>
+                    <small style="color: #999;">
+                        <button onclick="emergencyAccess()" style="background: none; border: none; color: #dc3545; cursor: pointer; font-size: 12px;">
+                            Emergency Access
+                        </button>
+                        <br>
+                        <span style="font-size: 10px; color: #ccc;">Contact admin for credentials</span>
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <div class="admin-header">
+        <div class="admin-title">
+            <img src="images/about-me.jpg" alt="Admin" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMjAiIGZpbGw9IiM2NjdlZWEiLz4KPHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjIiPgo8cGF0aCBkPSJtMjAgMjFjMC0zLjMxMzctMi42ODYzLTYtNi02cy02IDIuNjg2My02IDZ2MCIvPgo8Y2lyY2xlIGN4PSIxNCIgY3k9IjciIHI9IjQiLz4KPC9zdmc+Cjwvc3ZnPgo='">
+            <div>
+                <h1><i class="fas fa-cogs"></i> Portfolio Admin Panel</h1>
+                <small>Complete Website Management</small>
+            </div>
+        </div>
+        <div class="admin-actions">
+            <button onclick="changeAdminPassword()" class="btn btn-warning">
+                <i class="fas fa-key"></i> Change Password
+            </button>
+            <a href="index.html" target="_blank" class="btn btn-info">
+                <i class="fas fa-external-link-alt"></i> View Site
+            </a>
+            <button onclick="logout()" class="btn btn-danger">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+    </div>
+
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <ul class="sidebar-menu">
+                <li><a href="#" onclick="showSection('dashboard')" class="active">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a></li>
+                <li><a href="#" onclick="showSection('profile')">
+                    <i class="fas fa-user-circle"></i> Profile Management
+                </a></li>
+                <li><a href="#" onclick="showSection('projects')">
+                    <i class="fas fa-project-diagram"></i> Projects
+                </a></li>
+                <li><a href="#" onclick="showSection('gallery')">
+                    <i class="fas fa-images"></i> Gallery
+                </a></li>
+                <li><a href="#" onclick="showSection('users')">
+                    <i class="fas fa-users"></i> User Management
+                </a></li>
+                <li><a href="#" onclick="showSection('contact')">
+                    <i class="fas fa-envelope"></i> Contact Messages
+                </a></li>
+                <li><a href="#" onclick="showSection('settings')">
+                    <i class="fas fa-cog"></i> Site Settings
+                </a></li>
+                <li><a href="#" onclick="showSection('analytics')">
+                    <i class="fas fa-chart-line"></i> Analytics
+                </a></li>
+                <li><a href="#" onclick="showSection('backup')">
+                    <i class="fas fa-database"></i> Backup & Restore
+                </a></li>
+            </ul>
+        </div>
+
+        <!-- Content Area -->
+        <div class="content-area">
+            <!-- Dashboard Section -->
+            <div id="dashboard" class="content-section active">
+                <h2 class="section-title">
+                    <i class="fas fa-tachometer-alt"></i>
+                    Dashboard Overview
+                </h2>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <i class="fas fa-users"></i>
+                        <h3 id="totalUsers">0</h3>
+                        <p>Registered Users</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-project-diagram"></i>
+                        <h3 id="totalProjects">0</h3>
+                        <p>Total Projects</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-images"></i>
+                        <h3 id="totalGallery">0</h3>
+                        <p>Gallery Images</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-envelope"></i>
+                        <h3 id="totalMessages">0</h3>
+                        <p>Contact Messages</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-info-circle"></i> Admin Panel Features</h3>
+                    </div>
+                    <div class="form-grid">
+                        <div>
+                            <h4><i class="fas fa-check-circle"></i> Available Features:</h4>
+                            <ul style="margin-top: 15px; line-height: 2;">
+                                <li>✅ Complete Profile Management</li>
+                                <li>✅ Project Add/Edit/Delete</li>
+                                <li>✅ Gallery Image Management</li>
+                                <li>✅ User Registration Management</li>
+                                <li>✅ Contact Form Messages</li>
+                                <li>✅ Site Settings Control</li>
+                                <li>✅ Analytics & Reports</li>
+                                <li>✅ Data Backup & Restore</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4><i class="fas fa-rocket"></i> Quick Actions:</h4>
+                            <div style="margin-top: 15px; display: flex; flex-direction: column; gap: 10px;">
+                                <button onclick="showSection('projects')" class="btn btn-primary">
+                                    <i class="fas fa-plus"></i> Add New Project
+                                </button>
+                                <button onclick="showSection('gallery')" class="btn btn-success">
+                                    <i class="fas fa-image"></i> Upload Gallery Image
+                                </button>
+                                <button onclick="showSection('users')" class="btn btn-info">
+                                    <i class="fas fa-users"></i> View User List
+                                </button>
+                                <button onclick="backupData()" class="btn btn-warning">
+                                    <i class="fas fa-download"></i> Backup Website Data
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Management Section -->
+            <div id="profile" class="content-section">
+                <h2 class="section-title">
+                    <i class="fas fa-user-circle"></i>
+                    Profile Management
+                </h2>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Personal Information</h3>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="fullName">Full Name</label>
+                            <input type="text" id="fullName" placeholder="Enter full name">
+                        </div>
+                        <div class="form-group">
+                            <label for="jobTitle">Job Title</label>
+                            <input type="text" id="jobTitle" placeholder="Enter job title">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" placeholder="Enter email address">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" placeholder="Enter phone number">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="aboutMe">About Me Description</label>
+                        <textarea id="aboutMe" rows="5" placeholder="Write about yourself..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="skills">Skills (comma separated)</label>
+                        <input type="text" id="skills" placeholder="JavaScript, React, Node.js, etc.">
+                    </div>
+                    
+                    <button onclick="saveProfile()" class="btn btn-success">
+                        <i class="fas fa-save"></i> Save Profile
+                    </button>
+                </div>
+            </div>
+
+            <!-- Projects Section -->
+            <div id="projects" class="content-section">
+                <h2 class="section-title">
+                    <i class="fas fa-project-diagram"></i>
+                    Projects Management
+                </h2>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Add New Project</h3>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="projectTitle">Project Title</label>
+                            <input type="text" id="projectTitle" placeholder="Enter project title">
+                        </div>
+                        <div class="form-group">
+                            <label for="projectCategory">Category</label>
+                            <select id="projectCategory">
+                                <option value="">Select Category</option>
+                                <option value="Web Development">Web Development</option>
+                                <option value="Mobile App">Mobile App</option>
+                                <option value="Desktop App">Desktop App</option>
+                                <option value="AI/ML">AI/ML</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="projectTech">Technologies Used</label>
+                            <input type="text" id="projectTech" placeholder="React, Node.js, MongoDB, etc.">
+                        </div>
+                        <div class="form-group">
+                            <label for="projectUrl">Project URL (optional)</label>
+                            <input type="url" id="projectUrl" placeholder="https://example.com">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="projectDesc">Project Description</label>
+                        <textarea id="projectDesc" rows="4" placeholder="Describe your project..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="projectImage">Project Image</label>
+                        <input type="file" id="projectImage" accept="image/*">
+                    </div>
+                    
+                    <button onclick="addProject()" class="btn btn-success">
+                        <i class="fas fa-plus"></i> Add Project
+                    </button>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Existing Projects</h3>
+                        <button onclick="loadProjects()" class="btn btn-info">
+                            <i class="fas fa-sync"></i> Refresh
+                        </button>
+                    </div>
+                    <div id="projectsList">
+                        <p>Loading projects...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gallery Section -->
+            <div id="gallery" class="content-section">
+                <h2 class="section-title">
+                    <i class="fas fa-images"></i>
+                    Gallery Management
+                </h2>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Add New Image</h3>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="galleryTitle">Image Title</label>
+                            <input type="text" id="galleryTitle" placeholder="Enter image title">
+                        </div>
+                        <div class="form-group">
+                            <label for="galleryCategory">Category</label>
+                            <select id="galleryCategory">
+                                <option value="">Select Category</option>
+                                <option value="Screenshots">Screenshots</option>
+                                <option value="Certificates">Certificates</option>
+                                <option value="Personal">Personal</option>
+                                <option value="Work">Work</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="galleryImage">Select Image</label>
+                        <input type="file" id="galleryImage" accept="image/*">
+                    </div>
+                    
+                    <button onclick="addGalleryImage()" class="btn btn-success">
+                        <i class="fas fa-upload"></i> Upload Image
+                    </button>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Gallery Images</h3>
+                        <button onclick="loadGallery()" class="btn btn-info">
+                            <i class="fas fa-sync"></i> Refresh
+                        </button>
+                    </div>
+                    <div id="galleryList" class="gallery-grid">
+                        <p>Loading gallery...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Users Management Section -->
+            <div id="users" class="content-section">
+                <h2 class="section-title">
+                    <i class="fas fa-users"></i>
+                    Advanced User Management
+                </h2>
+
+                <!-- User Statistics Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <i class="fas fa-user-plus"></i>
+                        <h3 id="activeUsers">0</h3>
+                        <p>Active Users</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-user-clock"></i>
+                        <h3 id="recentUsers">0</h3>
+                        <p>Recent Signups</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-user-shield"></i>
+                        <h3 id="blockedUsers">0</h3>
+                        <p>Blocked Users</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-user-cog"></i>
+                        <h3 id="adminUsers">1</h3>
+                        <p>Admin Users</p>
+                    </div>
+                </div>
+
+                <!-- User Control Actions -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-tools"></i> User Control Actions</h3>
+                    </div>
+                    <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 20px;">
+                        <button onclick="loadUsers()" class="btn btn-info">
+                            <i class="fas fa-sync"></i> Refresh Users
+                        </button>
+                        <button onclick="exportUserData()" class="btn btn-success">
+                            <i class="fas fa-download"></i> Export User Data
+                        </button>
+                        <button onclick="sendBulkMessage()" class="btn btn-primary">
+                            <i class="fas fa-envelope"></i> Send Bulk Message
+                        </button>
+                        <button onclick="clearInactiveUsers()" class="btn btn-warning">
+                            <i class="fas fa-user-times"></i> Clear Inactive Users
+                        </button>
+                        <button onclick="showUserAnalytics()" class="btn btn-info">
+                            <i class="fas fa-chart-pie"></i> User Analytics
+                        </button>
+                    </div>
+                </div>
+
+                <!-- User Filter & Search -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-filter"></i> Filter & Search Users</h3>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="userSearch">Search Users</label>
+                            <input type="text" id="userSearch" placeholder="Search by name, email..." oninput="filterUsers()">
+                        </div>
+                        <div class="form-group">
+                            <label for="userTypeFilter">Filter by Type</label>
+                            <select id="userTypeFilter" onchange="filterUsers()">
+                                <option value="">All Users</option>
+                                <option value="regular_user">Regular Users</option>
+                                <option value="premium_user">Premium Users</option>
+                                <option value="admin">Admin Users</option>
+                                <option value="blocked">Blocked Users</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="dateFilter">Registration Date</label>
+                            <select id="dateFilter" onchange="filterUsers()">
+                                <option value="">Any Time</option>
+                                <option value="today">Today</option>
+                                <option value="week">This Week</option>
+                                <option value="month">This Month</option>
+                                <option value="year">This Year</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="statusFilter">Status</label>
+                            <select id="statusFilter" onchange="filterUsers()">
+                                <option value="">All Status</option>
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                                <option value="suspended">Suspended</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- User Management Table -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-users-cog"></i> User Management Dashboard</h3>
+                        <div style="display: flex; gap: 10px;">
+                            <button onclick="selectAllUsers()" class="btn btn-info" style="padding: 5px 15px; font-size: 14px;">
+                                <i class="fas fa-check-square"></i> Select All
+                            </button>
+                            <button onclick="bulkAction()" class="btn btn-warning" style="padding: 5px 15px; font-size: 14px;">
+                                <i class="fas fa-cogs"></i> Bulk Action
+                            </button>
+                        </div>
+                    </div>
+                    <div id="usersList">
+                        <p>Loading users...</p>
+                    </div>
+                </div>
+
+                <!-- Password Change Modal -->
+                <div id="passwordChangeModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 10002; padding: 50px;">
+                    <div style="background: white; max-width: 500px; margin: 0 auto; border-radius: 15px; padding: 40px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+                            <h3><i class="fas fa-key"></i> Change Admin Password</h3>
+                            <button onclick="closePasswordModal()" class="btn btn-danger">
+                                <i class="fas fa-times"></i> Close
+                            </button>
+                        </div>
+                        
+                        <form id="passwordChangeForm" onsubmit="updateAdminPassword(event)">
+                            <div style="margin-bottom: 20px;">
+                                <label style="display: block; margin-bottom: 8px; font-weight: 600;">Current Password *</label>
+                                <div style="position: relative;">
+                                    <input type="password" id="currentPassword" placeholder="Enter current password" required
+                                           style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; padding-right: 45px;">
+                                    <button type="button" onclick="togglePasswordVisibility('currentPassword')" 
+                                            style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #666; cursor: pointer;">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div style="margin-bottom: 20px;">
+                                <label style="display: block; margin-bottom: 8px; font-weight: 600;">New Password *</label>
+                                <div style="position: relative;">
+                                    <input type="password" id="newPassword" placeholder="Enter new password" required minlength="6"
+                                           style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; padding-right: 45px;">
+                                    <button type="button" onclick="togglePasswordVisibility('newPassword')" 
+                                            style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #666; cursor: pointer;">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                                <small style="color: #666;">Password must be at least 6 characters long</small>
+                            </div>
+                            
+                            <div style="margin-bottom: 25px;">
+                                <label style="display: block; margin-bottom: 8px; font-weight: 600;">Confirm New Password *</label>
+                                <div style="position: relative;">
+                                    <input type="password" id="confirmPassword" placeholder="Confirm new password" required
+                                           style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; padding-right: 45px;">
+                                    <button type="button" onclick="togglePasswordVisibility('confirmPassword')" 
+                                            style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #666; cursor: pointer;">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div style="display: flex; gap: 15px;">
+                                <button type="submit" class="btn btn-success" style="flex: 1;">
+                                    <i class="fas fa-save"></i> Update Password
+                                </button>
+                                <button type="button" onclick="closePasswordModal()" class="btn btn-secondary">
+                                    <i class="fas fa-times"></i> Cancel
+                                </button>
+                            </div>
+                        </form>
+                        
+                        <div style="margin-top: 25px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                            <h5 style="margin: 0 0 10px 0; color: #333;"><i class="fas fa-shield-alt"></i> Security Tips:</h5>
+                            <ul style="margin: 0; padding-left: 20px; font-size: 14px; color: #666;">
+                                <li>Use a strong password with letters, numbers & symbols</li>
+                                <li>Don't use the same password for multiple accounts</li>
+                                <li>Change your password regularly</li>
+                                <li>Keep your password secure and don't share it</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bulk Message Modal -->
+                <div id="bulkMessageModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 10001; padding: 50px;">
+                    <div style="background: white; max-width: 600px; margin: 0 auto; border-radius: 15px; padding: 30px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                            <h3><i class="fas fa-paper-plane"></i> Send Bulk Message</h3>
+                            <button onclick="closeBulkMessageModal()" class="btn btn-danger">
+                                <i class="fas fa-times"></i> Close
+                            </button>
+                        </div>
+                        
+                        <div class="form-group" style="margin-bottom: 15px;">
+                            <label for="messageType" style="display: block; margin-bottom: 8px; font-weight: bold;">Message Type</label>
+                            <select id="messageType" style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px;">
+                                <option value="announcement">📢 Announcement</option>
+                                <option value="notification">🔔 Notification</option>
+                                <option value="warning">⚠️ Warning</option>
+                                <option value="promotion">🎉 Promotion</option>
+                                <option value="maintenance">🔧 Maintenance Notice</option>
+                                <option value="welcome">👋 Welcome Message</option>
+                                <option value="reminder">⏰ Reminder</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group" style="margin-bottom: 15px;">
+                            <label for="messageSubject" style="display: block; margin-bottom: 8px; font-weight: bold;">Subject *</label>
+                            <input type="text" id="messageSubject" placeholder="Enter message subject" 
+                                   style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px;" required>
+                        </div>
+                        
+                        <div class="form-group" style="margin-bottom: 20px;">
+                            <label for="messageContent" style="display: block; margin-bottom: 8px; font-weight: bold;">Message Content *</label>
+                            <textarea id="messageContent" rows="6" placeholder="Enter your message content here..." 
+                                      style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; resize: vertical;" required></textarea>
+                        </div>
+                        
+                        <div style="display: flex; gap: 15px;">
+                            <button onclick="sendBulkMessageNow()" class="btn btn-primary" style="flex: 1;">
+                                <i class="fas fa-paper-plane"></i> Send Message to All Users
+                            </button>
+                            <button onclick="closeBulkMessageModal()" class="btn btn-secondary" style="width: auto;">
+                                <i class="fas fa-times"></i> Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- User Details Modal -->
+                <div id="userDetailsModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 10000; padding: 50px;">
+                    <div style="background: white; max-width: 800px; margin: 0 auto; border-radius: 15px; padding: 30px; max-height: 80vh; overflow-y: auto;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                            <h3><i class="fas fa-user"></i> User Details & Control</h3>
+                            <button onclick="closeUserModal()" class="btn btn-danger">
+                                <i class="fas fa-times"></i> Close
+                            </button>
+                        </div>
+                        <div id="userDetailsContent">
+                            <!-- User details will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bulk Message Modal -->
+                <div id="bulkMessageModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 10000; padding: 50px;">
+                    <div style="background: white; max-width: 600px; margin: 0 auto; border-radius: 15px; padding: 30px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                            <h3><i class="fas fa-envelope"></i> Send Bulk Message</h3>
+                            <button onclick="closeBulkMessageModal()" class="btn btn-danger">
+                                <i class="fas fa-times"></i> Close
+                            </button>
+                        </div>
+                        <div class="form-group">
+                            <label for="messageSubject">Message Subject</label>
+                            <input type="text" id="messageSubject" placeholder="Enter message subject">
+                        </div>
+                        <div class="form-group">
+                            <label for="messageContent">Message Content</label>
+                            <textarea id="messageContent" rows="6" placeholder="Enter your message..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="messageType">Message Type</label>
+                            <select id="messageType">
+                                <option value="info">Information</option>
+                                <option value="promotion">Promotion</option>
+                                <option value="update">Update</option>
+                                <option value="warning">Warning</option>
+                            </select>
+                        </div>
+                        <button onclick="sendBulkMessageNow()" class="btn btn-success">
+                            <i class="fas fa-paper-plane"></i> Send Message
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Messages Section -->
+            <div id="contact" class="content-section">
+                <h2 class="section-title">
+                    <i class="fas fa-envelope"></i>
+                    Contact Messages
+                </h2>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Messages from Contact Form</h3>
+                        <button onclick="loadMessages()" class="btn btn-info">
+                            <i class="fas fa-sync"></i> Refresh
+                        </button>
+                    </div>
+                    <div id="messagesList">
+                        <p>Loading messages...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Site Settings Section -->
+            <div id="settings" class="content-section">
+                <h2 class="section-title">
+                    <i class="fas fa-cog"></i>
+                    Site Settings
+                </h2>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Website Configuration</h3>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="siteTitle">Site Title</label>
+                            <input type="text" id="siteTitle" placeholder="Portfolio Website" value="Md Imran Hossain - Portfolio">
+                        </div>
+                        <div class="form-group">
+                            <label for="siteDescription">Site Description</label>
+                            <input type="text" id="siteDescription" placeholder="Professional Portfolio Website">
+                        </div>
+                        <div class="form-group">
+                            <label for="contactEmail">Contact Email</label>
+                            <input type="email" id="contactEmail" placeholder="contact@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="socialLinks">Social Media Links</label>
+                            <textarea id="socialLinks" rows="4" placeholder='{"facebook": "https://facebook.com/profile", "linkedin": "https://linkedin.com/in/profile"}'></textarea>
+                        </div>
+                    </div>
+                    
+                    <button onclick="saveSettings()" class="btn btn-success">
+                        <i class="fas fa-save"></i> Save Settings
+                    </button>
+                </div>
+            </div>
+
+            <!-- Analytics Section -->
+            <div id="analytics" class="content-section">
+                <h2 class="section-title">
+                    <i class="fas fa-chart-line"></i>
+                    Analytics & Reports
+                </h2>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Website Statistics</h3>
+                    </div>
+                    <div id="analyticsData">
+                        <p>Loading analytics...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Backup & Restore Section -->
+            <div id="backup" class="content-section">
+                <h2 class="section-title">
+                    <i class="fas fa-database"></i>
+                    Backup & Restore
+                </h2>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Data Management</h3>
+                    </div>
+                    <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                        <button onclick="backupData()" class="btn btn-success">
+                            <i class="fas fa-download"></i> Backup All Data
+                        </button>
+                        <button onclick="exportUsers()" class="btn btn-info">
+                            <i class="fas fa-users"></i> Export Users
+                        </button>
+                        <button onclick="exportProjects()" class="btn btn-info">
+                            <i class="fas fa-project-diagram"></i> Export Projects
+                        </button>
+                        <button onclick="clearAllData()" class="btn btn-danger">
+                            <i class="fas fa-trash"></i> Clear All Data
+                        </button>
+                    </div>
+                    
+                    <div class="form-group" style="margin-top: 25px;">
+                        <label for="restoreFile">Restore from Backup</label>
+                        <input type="file" id="restoreFile" accept=".json">
+                    </div>
+                    <button onclick="restoreData()" class="btn btn-warning">
+                        <i class="fas fa-upload"></i> Restore Data
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alert Container -->
+    <div id="alertContainer"></div>
+
+    <script>
+        // Initialize Admin Panel
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Portfolio Admin Panel Loading...');
+            
+            // Check authentication first
+            if (!checkAdminSession()) {
+                return;
+            }
+            
+            initializeAdminPanel();
+        });
+
+        function initializeAdminPanel() {
+            updateDashboardStats();
+            loadProfile();
+            
+            // Initialize user management if on that section
+            if (document.getElementById('userManagement')) {
+                loadUsers();
+                updateUserStats();
+            }
+            
+            // Check if admin credentials need to be set up
+            const adminCreds = localStorage.getItem('adminCredentials');
+            if (!adminCreds) {
+                // First time setup
+                showFirstTimeSetup();
+            } else {
+                const creds = JSON.parse(adminCreds);
+                // Check if still using default password
+                if (creds.password === 'admin123') {
+                    showAlert('⚠️ You are using the default password. Please change it for security!', 'warning');
+                    setTimeout(() => {
+                        if (confirm('Change admin password now for better security?')) {
+                            changeAdminPassword();
+                        }
+                    }, 3000);
+                }
+            }
+            
+            // Add welcome message with system status
+            console.log('🎯 System Status:', {
+                users: JSON.parse(localStorage.getItem('portfolioUsers') || '[]').length,
+                projects: JSON.parse(localStorage.getItem('portfolioProjects') || '[]').length,
+                gallery: JSON.parse(localStorage.getItem('portfolioGallery') || '[]').length,
+                version: 'v2.0 - Secure'
+            });
+            
+            showAlert('🚀 Secure Admin Panel Ready! All systems operational.', 'success');
+        }
+
+        function showFirstTimeSetup() {
+            const setupPassword = prompt('🔐 FIRST TIME SETUP\n\nSet your admin password (minimum 6 characters):');
+            
+            if (setupPassword && setupPassword.length >= 6) {
+                const confirmPassword = prompt('Confirm your admin password:');
+                
+                if (setupPassword === confirmPassword) {
+                    localStorage.setItem('adminCredentials', JSON.stringify({
+                        username: 'admin',
+                        password: setupPassword,
+                        created: new Date().toISOString(),
+                        setupCompleted: true
+                    }));
+                    
+                    showAlert('✅ Admin credentials set successfully! Remember your password.', 'success');
+                    logUserAction('First time admin setup completed');
+                } else {
+                    showAlert('❌ Passwords do not match! Please try again.', 'error');
+                    showFirstTimeSetup(); // Try again
+                }
+            } else {
+                showAlert('❌ Password must be at least 6 characters!', 'error');
+                showFirstTimeSetup(); // Try again
+            }
+        }
+
+        function backupUserData() {
+            const users = JSON.parse(localStorage.getItem('portfolioUsers') || '[]');
+            const projects = JSON.parse(localStorage.getItem('portfolioProjects') || '[]');
+            const gallery = JSON.parse(localStorage.getItem('portfolioGallery') || '[]');
+            const logs = JSON.parse(localStorage.getItem('userManagementLogs') || '[]');
+            
+            const backupData = {
+                users: users,
+                projects: projects,
+                gallery: gallery,
+                logs: logs,
+                backupDate: new Date().toISOString(),
+                version: '2.0'
+            };
+            
+            const dataStr = JSON.stringify(backupData, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(dataBlob);
+            link.download = `portfolio-backup-${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            
+            logUserAction(`Full data backup created`);
+            showAlert('🔒 Secure backup created and downloaded successfully!', 'success');
+        }
+
+        // Navigation
+        function showSection(sectionId) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => section.classList.remove('active'));
+            
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Update active menu item
+            const menuItems = document.querySelectorAll('.sidebar-menu a');
+            menuItems.forEach(item => item.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Load section-specific data
+            switch(sectionId) {
+                case 'users':
+                    loadUsers();
+                    break;
+                case 'projects':
+                    loadProjects();
+                    break;
+                case 'gallery':
+                    loadGallery();
+                    break;
+                case 'contact':
+                    loadMessages();
+                    break;
+                case 'analytics':
+                    loadAnalytics();
+                    break;
+            }
+        }
+
+        // Dashboard Stats
+        function updateDashboardStats() {
+            const users = JSON.parse(localStorage.getItem('portfolioUsers') || '[]');
+            const projects = JSON.parse(localStorage.getItem('portfolioProjects') || '[]');
+            const gallery = JSON.parse(localStorage.getItem('portfolioGallery') || '[]');
+            const messages = JSON.parse(localStorage.getItem('portfolioMessages') || '[]');
+
+            document.getElementById('totalUsers').textContent = users.length;
+            document.getElementById('totalProjects').textContent = projects.length;
+            document.getElementById('totalGallery').textContent = gallery.length;
+            document.getElementById('totalMessages').textContent = messages.length;
+        }
+
+        // Profile Management
+        function loadProfile() {
+            const profile = JSON.parse(localStorage.getItem('portfolioProfile') || '{}');
+            
+            if (profile.fullName) document.getElementById('fullName').value = profile.fullName;
+            if (profile.jobTitle) document.getElementById('jobTitle').value = profile.jobTitle;
+            if (profile.email) document.getElementById('email').value = profile.email;
+            if (profile.phone) document.getElementById('phone').value = profile.phone;
+            if (profile.aboutMe) document.getElementById('aboutMe').value = profile.aboutMe;
+            if (profile.skills) document.getElementById('skills').value = profile.skills;
+        }
+
+        function saveProfile() {
+            const profile = {
+                fullName: document.getElementById('fullName').value,
+                jobTitle: document.getElementById('jobTitle').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                aboutMe: document.getElementById('aboutMe').value,
+                skills: document.getElementById('skills').value,
+                lastUpdated: new Date().toISOString()
+            };
+
+            localStorage.setItem('portfolioProfile', JSON.stringify(profile));
+            showAlert('Profile updated successfully!', 'success');
+        }
+
+        // Projects Management
+        function addProject() {
+            const title = document.getElementById('projectTitle').value.trim();
+            const category = document.getElementById('projectCategory').value;
+            const tech = document.getElementById('projectTech').value.trim();
+            const url = document.getElementById('projectUrl').value.trim();
+            const desc = document.getElementById('projectDesc').value.trim();
+            const imageFile = document.getElementById('projectImage').files[0];
+
+            if (!title || !desc) {
+                showAlert('Please fill in project title and description.', 'error');
+                return;
+            }
+
+            const projects = JSON.parse(localStorage.getItem('portfolioProjects') || '[]');
+            
+            const project = {
+                id: Date.now(),
+                title: title,
+                category: category,
+                technologies: tech,
+                url: url,
+                description: desc,
+                date: new Date().toISOString()
+            };
+
+            if (imageFile) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    project.image = e.target.result;
+                    projects.push(project);
+                    localStorage.setItem('portfolioProjects', JSON.stringify(projects));
+                    clearProjectForm();
+                    loadProjects();
+                    updateDashboardStats();
+                    showAlert('Project added successfully!', 'success');
+                };
+                reader.readAsDataURL(imageFile);
+            } else {
+                projects.push(project);
+                localStorage.setItem('portfolioProjects', JSON.stringify(projects));
+                clearProjectForm();
+                loadProjects();
+                updateDashboardStats();
+                showAlert('Project added successfully!', 'success');
+            }
+        }
+
+        function clearProjectForm() {
+            document.getElementById('projectTitle').value = '';
+            document.getElementById('projectCategory').value = '';
+            document.getElementById('projectTech').value = '';
+            document.getElementById('projectUrl').value = '';
+            document.getElementById('projectDesc').value = '';
+            document.getElementById('projectImage').value = '';
+        }
+
+        function loadProjects() {
+            const projects = JSON.parse(localStorage.getItem('portfolioProjects') || '[]');
+            const projectsList = document.getElementById('projectsList');
+
+            if (projects.length === 0) {
+                projectsList.innerHTML = '<p>No projects found. Add your first project above.</p>';
+                return;
+            }
+
+            let html = '<table class="data-table"><thead><tr><th>Title</th><th>Category</th><th>Technologies</th><th>Date</th><th>Actions</th></tr></thead><tbody>';
+            
+            projects.forEach((project, index) => {
+                html += `
+                    <tr>
+                        <td><strong>${project.title}</strong></td>
+                        <td>${project.category || 'Uncategorized'}</td>
+                        <td>${project.technologies || 'Not specified'}</td>
+                        <td>${new Date(project.date).toLocaleDateString()}</td>
+                        <td>
+                            <button onclick="deleteProject(${project.id})" class="btn btn-danger" style="padding: 5px 10px; font-size: 12px;">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            html += '</tbody></table>';
+            projectsList.innerHTML = html;
+        }
+
+        function deleteProject(projectId) {
+            if (!confirm('Are you sure you want to delete this project?')) return;
+            
+            let projects = JSON.parse(localStorage.getItem('portfolioProjects') || '[]');
+            projects = projects.filter(project => project.id !== projectId);
+            localStorage.setItem('portfolioProjects', JSON.stringify(projects));
+            
+            loadProjects();
+            updateDashboardStats();
+            showAlert('Project deleted successfully!', 'success');
+        }
+
+        // Gallery Management
+        function addGalleryImage() {
+            const title = document.getElementById('galleryTitle').value.trim();
+            const category = document.getElementById('galleryCategory').value;
+            const imageFile = document.getElementById('galleryImage').files[0];
+
+            if (!title || !imageFile) {
+                showAlert('Please enter title and select an image.', 'error');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const gallery = JSON.parse(localStorage.getItem('portfolioGallery') || '[]');
+                gallery.push({
+                    id: Date.now(),
+                    title: title,
+                    category: category,
+                    image: e.target.result,
+                    date: new Date().toISOString()
+                });
+
+                localStorage.setItem('portfolioGallery', JSON.stringify(gallery));
+                
+                document.getElementById('galleryTitle').value = '';
+                document.getElementById('galleryCategory').value = '';
+                document.getElementById('galleryImage').value = '';
+                
+                loadGallery();
+                updateDashboardStats();
+                showAlert('Image added to gallery successfully!', 'success');
+            };
+            reader.readAsDataURL(imageFile);
+        }
+
+        function loadGallery() {
+            const gallery = JSON.parse(localStorage.getItem('portfolioGallery') || '[]');
+            const galleryList = document.getElementById('galleryList');
+
+            if (gallery.length === 0) {
+                galleryList.innerHTML = '<p>No images in gallery. Upload your first image above.</p>';
+                return;
+            }
+
+            let html = '';
+            gallery.forEach((item, index) => {
+                html += `
+                    <div class="gallery-item">
+                        <img src="${item.image}" alt="${item.title}">
+                        <div class="gallery-item-info">
+                            <h4>${item.title}</h4>
+                            <p><small>${item.category || 'Uncategorized'}</small></p>
+                            <button onclick="deleteGalleryItem(${item.id})" class="btn btn-danger" style="padding: 5px 10px; font-size: 12px; margin-top: 10px;">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            galleryList.innerHTML = html;
+        }
+
+        function deleteGalleryItem(itemId) {
+            if (!confirm('Are you sure you want to delete this image?')) return;
+            
+            let gallery = JSON.parse(localStorage.getItem('portfolioGallery') || '[]');
+            gallery = gallery.filter(item => item.id !== itemId);
+            localStorage.setItem('portfolioGallery', JSON.stringify(gallery));
+            
+            loadGallery();
+            updateDashboardStats();
+            showAlert('Image deleted successfully!', 'success');
+        }
+
+        // Advanced Users Management
+        function loadUsers() {
+            const users = JSON.parse(localStorage.getItem('portfolioUsers') || '[]');
+            const usersList = document.getElementById('usersList');
+
+            // Update user statistics
+            updateUserStats(users);
+
+            if (users.length === 0) {
+                usersList.innerHTML = '<p>No users registered yet. Users will appear here after registration.</p>';
+                return;
+            }
+
+            let html = `
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="selectAllCheck" onchange="toggleSelectAll()"></th>
+                            <th>Profile</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Type</th>
+                            <th>Status</th>
+                            <th>Registration</th>
+                            <th>Last Login</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+            
+            users.forEach((user, index) => {
+                const profileImage = user.profileImage || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSI+PGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMjAiIGZpbGw9IiM2NjdlZWEiLz48L3N2Zz4=';
+                const userType = user.userType || 'regular_user';
+                const status = user.status || 'active';
+                const registrationDate = user.registrationDate || 'Unknown';
+                const lastLogin = user.lastLogin || 'Never';
+                
+                // Status badge color
+                let statusColor = '#28a745'; // green for active
+                if (status === 'inactive') statusColor = '#6c757d'; // gray
+                if (status === 'suspended') statusColor = '#dc3545'; // red
+                if (status === 'blocked') statusColor = '#fd7e14'; // orange
+
+                // User type badge color
+                let typeColor = '#007bff'; // blue for regular
+                if (userType === 'premium_user') typeColor = '#28a745'; // green
+                if (userType === 'admin') typeColor = '#dc3545'; // red
+
+                html += `
+                    <tr data-user-index="${index}">
+                        <td><input type="checkbox" class="user-checkbox" data-index="${index}"></td>
+                        <td><img src="${profileImage}" alt="Profile" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;"></td>
+                        <td><strong>${user.name || 'Unknown'}</strong>${user.phone ? '<br><small>' + user.phone + '</small>' : ''}</td>
+                        <td>${user.email || 'No email'}</td>
+                        <td><span style="padding: 4px 12px; background: ${typeColor}; color: white; border-radius: 20px; font-size: 12px; font-weight: 600;">${userType.replace('_', ' ').toUpperCase()}</span></td>
+                        <td><span style="padding: 4px 12px; background: ${statusColor}; color: white; border-radius: 20px; font-size: 12px; font-weight: 600;">${status.toUpperCase()}</span></td>
+                        <td><small>${new Date(registrationDate).toLocaleDateString()}</small></td>
+                        <td><small>${lastLogin !== 'Never' ? new Date(lastLogin).toLocaleDateString() : lastLogin}</small></td>
+                        <td>
+                            <div style="display: flex; gap: 5px;">
+                                <button onclick="viewUserDetails(${index})" class="btn btn-info" style="padding: 5px 8px; font-size: 12px;" title="View Details">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button onclick="editUser(${index})" class="btn btn-warning" style="padding: 5px 8px; font-size: 12px;" title="Edit User">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button onclick="toggleUserStatus(${index})" class="btn ${status === 'active' ? 'btn-danger' : 'btn-success'}" style="padding: 5px 8px; font-size: 12px;" title="${status === 'active' ? 'Suspend' : 'Activate'} User">
+                                    <i class="fas fa-${status === 'active' ? 'ban' : 'check'}"></i>
+                                </button>
+                                <button onclick="deleteUser(${index})" class="btn btn-danger" style="padding: 5px 8px; font-size: 12px;" title="Delete User">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            html += '</tbody></table>';
+            usersList.innerHTML = html;
+        }
+
+        function updateUserStats(users) {
+            const activeUsers = users.filter(u => (u.status || 'active') === 'active').length;
+            const blockedUsers = users.filter(u => (u.status || 'active') === 'blocked').length;
+            const adminUsers = users.filter(u => (u.userType || 'regular_user') === 'admin').length + 1; // +1 for main admin
+            
+            // Recent users (last 7 days)
+            const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+            const recentUsers = users.filter(u => {
+                const regDate = new Date(u.registrationDate);
+                return regDate > weekAgo;
+            }).length;
+
+            document.getElementById('activeUsers').textContent = activeUsers;
+            document.getElementById('recentUsers').textContent = recentUsers;
+            document.getElementById('blockedUsers').textContent = blockedUsers;
+            document.getElementById('adminUsers').textContent = adminUsers;
+        }
+
+        function filterUsers() {
+            const searchTerm = document.getElementById('userSearch').value.toLowerCase();
+            const typeFilter = document.getElementById('userTypeFilter').value;
+            const dateFilter = document.getElementById('dateFilter').value;
+            const statusFilter = document.getElementById('statusFilter').value;
+
+            const users = JSON.parse(localStorage.getItem('portfolioUsers') || '[]');
+            let filteredUsers = [...users];
+
+            // Apply search filter
+            if (searchTerm) {
+                filteredUsers = filteredUsers.filter(user => 
+                    (user.name || '').toLowerCase().includes(searchTerm) ||
+                    (user.email || '').toLowerCase().includes(searchTerm)
+                );
+            }
+
+            // Apply type filter
+            if (typeFilter) {
+                filteredUsers = filteredUsers.filter(user => 
+                    (user.userType || 'regular_user') === typeFilter
+                );
+            }
+
+            // Apply status filter
+            if (statusFilter) {
+                filteredUsers = filteredUsers.filter(user => 
+                    (user.status || 'active') === statusFilter
+                );
+            }
+
+            // Apply date filter
+            if (dateFilter) {
+                const now = new Date();
+                const filterDate = new Date();
+                
+                switch(dateFilter) {
+                    case 'today':
+                        filterDate.setHours(0, 0, 0, 0);
+                        break;
+                    case 'week':
+                        filterDate.setDate(filterDate.getDate() - 7);
+                        break;
+                    case 'month':
+                        filterDate.setMonth(filterDate.getMonth() - 1);
+                        break;
+                    case 'year':
+                        filterDate.setFullYear(filterDate.getFullYear() - 1);
+                        break;
+                }
+
+                filteredUsers = filteredUsers.filter(user => {
+                    const regDate = new Date(user.registrationDate);
+                    return regDate >= filterDate;
+                });
+            }
+
+            // Update display with filtered users
+            displayFilteredUsers(filteredUsers);
+        }
+
+        function displayFilteredUsers(filteredUsers) {
+            const usersList = document.getElementById('usersList');
+            
+            if (filteredUsers.length === 0) {
+                usersList.innerHTML = '<p>No users match the current filters.</p>';
+                return;
+            }
+
+            // Use the same display logic as loadUsers but with filtered data
+            let html = `
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="selectAllCheck" onchange="toggleSelectAll()"></th>
+                            <th>Profile</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Type</th>
+                            <th>Status</th>
+                            <th>Registration</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+            
+            filteredUsers.forEach((user, originalIndex) => {
+                // Find original index in full users array
+                const allUsers = JSON.parse(localStorage.getItem('portfolioUsers') || '[]');
+                const realIndex = allUsers.findIndex(u => u.email === user.email && u.registrationDate === user.registrationDate);
+                
+                const profileImage = user.profileImage || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSI+PGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMjAiIGZpbGw9IiM2NjdlZWEiLz48L3N2Zz4=';
+                const userType = user.userType || 'regular_user';
+                const status = user.status || 'active';
+                
+                let statusColor = '#28a745';
+                if (status === 'inactive') statusColor = '#6c757d';
+                if (status === 'suspended') statusColor = '#dc3545';
+                if (status === 'blocked') statusColor = '#fd7e14';
+
+                let typeColor = '#007bff';
+                if (userType === 'premium_user') typeColor = '#28a745';
+                if (userType === 'admin') typeColor = '#dc3545';
+
+                html += `
+                    <tr data-user-index="${realIndex}">
+                        <td><input type="checkbox" class="user-checkbox" data-index="${realIndex}"></td>
+                        <td><img src="${profileImage}" alt="Profile" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;"></td>
+                        <td><strong>${user.name || 'Unknown'}</strong></td>
+                        <td>${user.email || 'No email'}</td>
+                        <td><span style="padding: 4px 12px; background: ${typeColor}; color: white; border-radius: 20px; font-size: 12px;">${userType.replace('_', ' ').toUpperCase()}</span></td>
+                        <td><span style="padding: 4px 12px; background: ${statusColor}; color: white; border-radius: 20px; font-size: 12px;">${status.toUpperCase()}</span></td>
+                        <td><small>${new Date(user.registrationDate).toLocaleDateString()}</small></td>
+                        <td>
+                            <div style="display: flex; gap: 5px;">
+                                <button onclick="viewUserDetails(${realIndex})" class="btn btn-info" style="padding: 5px 8px; font-size: 12px;">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button onclick="toggleUserStatus(${realIndex})" class="btn ${status === 'active' ? 'btn-danger' : 'btn-success'}" style="padding: 5px 8px; font-size: 12px;">
+                                    <i class="fas fa-${status === 'active' ? 'ban' : 'check'}"></i>
+                                </button>
+                                <button onclick="deleteUser(${realIndex})" class="btn btn-danger" style="padding: 5px 8px; font-size: 12px;">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            html += '</tbody></table>';
+            usersList.innerHTML = html;
+        }
+
+        function deleteUser(userIndex) {
+            if (!confirm('Are you sure you want to delete this user? This action cannot be undone.')) return;
+            
+            let users = JSON.parse(localStorage.getItem('portfolioUsers') || '[]');
+            const deletedUser = users[userIndex];
+            
+            users.splice(userIndex, 1);
+            localStorage.setItem('portfolioUsers', JSON.stringify(users));
+            
+            // Log the deletion
+            logUserAction(`User deleted: ${deletedUser.name || 'Unknown'} (${deletedUser.email || 'No email'})`);
+            
+            loadUsers();
+            updateDashboardStats();
+            showAlert('User deleted successfully!', 'success');
+        }
+
+        // Advanced User Management Functions
+        function viewUserDetails(userIndex) {
+            const users = JSON.parse(localStorage.getItem('portfolioUsers') || '[]');
+            const user = users[userIndex];
+            
+            if (!user) return;
+
+            const modal = document.getElementById('userDetailsModal');
+            const content = document.getElementById('userDetailsContent');
+            
+            const profileImage = user.profileImage || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iODAiIHZpZXdCb3g9IjAgMCA4MCA4MCIgZmlsbD0ibm9uZSI+PGNpcmNsZSBjeD0iNDAiIGN5PSI0MCIgcj0iNDAiIGZpbGw9IiM2NjdlZWEiLz48L3N2Zz4=';
+            
+            content.innerHTML = `
+                <div style="display: grid; grid-template-columns: auto 1fr; gap: 30px; align-items: start;">
+                    <div style="text-align: center;">
+                        <img src="${profileImage}" alt="Profile" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 4px solid #667eea;">
+                        <h3 style="margin: 15px 0 5px 0;">${user.name || 'Unknown User'}</h3>
+                        <p style="color: #666; margin: 0;">${user.userType || 'regular_user'}</p>
+                        <div style="margin-top: 15px;">
+                            <span style="padding: 5px 15px; background: ${(user.status || 'active') === 'active' ? '#28a745' : '#dc3545'}; color: white; border-radius: 20px; font-size: 14px;">
+                                ${(user.status || 'active').toUpperCase()}
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px;">
+                            <div>
+                                <h4><i class="fas fa-user"></i> Personal Information</h4>
+                                <p><strong>Full Name:</strong> ${user.name || 'Not provided'}</p>
+                                <p><strong>Email:</strong> ${user.email || 'Not provided'}</p>
+                                <p><strong>Phone:</strong> ${user.phone || 'Not provided'}</p>
+                                <p><strong>Date of Birth:</strong> ${user.dateOfBirth || 'Not provided'}</p>
+                                <p><strong>Gender:</strong> ${user.gender || 'Not provided'}</p>
+                                <p><strong>Location:</strong> ${user.location || 'Not provided'}</p>
+                            </div>
+                            
+                            <div>
+                                <h4><i class="fas fa-info-circle"></i> Account Information</h4>
+                                <p><strong>User Type:</strong> ${user.userType || 'regular_user'}</p>
+                                <p><strong>Registration Date:</strong> ${new Date(user.registrationDate).toLocaleDateString()}</p>
+                                <p><strong>Last Login:</strong> ${user.lastLogin ? new Date(user.lastLogin).toLocaleDateString() : 'Never'}</p>
+                                <p><strong>Status:</strong> ${user.status || 'active'}</p>
+                                <p><strong>Email Verified:</strong> ${user.emailVerified ? 'Yes' : 'No'}</p>
+                                <p><strong>Profile Complete:</strong> ${user.profileComplete ? 'Yes' : 'No'}</p>
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 25px;">
+                            <h4><i class="fas fa-cogs"></i> Skills & Interests</h4>
+                            <p><strong>Skills:</strong> ${user.skills || 'Not provided'}</p>
+                            <p><strong>Bio:</strong> ${user.bio || 'Not provided'}</p>
+                            <p><strong>Interests:</strong> ${user.interests || 'Not provided'}</p>
+                        </div>
+
+                        <div style="margin-bottom: 25px;">
+                            <h4><i class="fas fa-chart-line"></i> Activity & Statistics</h4>
+                            <p><strong>Profile Views:</strong> ${user.profileViews || 0}</p>
+                            <p><strong>Projects Created:</strong> ${user.projectsCreated || 0}</p>
+                            <p><strong>Messages Sent:</strong> ${user.messagesSent || 0}</p>
+                            <p><strong>Login Count:</strong> ${user.loginCount || 0}</p>
+                        </div>
+
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                            <button onclick="editUserInModal(${userIndex})" class="btn btn-primary">
+                                <i class="fas fa-edit"></i> Edit User
+                            </button>
+                            <button onclick="changeUserType(${userIndex})" class="btn btn-info">
+                                <i class="fas fa-user-cog"></i> Change Type
+                            </button>
+                            <button onclick="toggleUserStatus(${userIndex})" class="btn btn-warning">
+                                <i class="fas fa-ban"></i> Toggle Status
+                            </button>
+                            <button onclick="sendUserMessage(${userIndex})" class="btn btn-success">
+                                <i class="fas fa-envelope"></i> Send Message
+                            </button>
+                            <button onclick="resetUserPassword(${userIndex})" class="btn btn-warning">
+                                <i class="fas fa-key"></i> Reset Password
+                            </button>
+                            <button onclick="loginAsUser(${userIndex})" class="btn btn-info">
+                                <i class="fas fa-sign-in-alt"></i> Login as User
+                            </button>
+                            <button onclick="deleteUser(${userIndex}); closeUserModal();" class="btn btn-danger">
+                                <i class="fas fa-trash"></i> Delete User
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            modal.style.display = 'block';
+        }
+
+        function closeUserModal() {
+            document.getElementById('userDetailsModal').style.display = 'none';
+        }
+
+        function editUser(userIndex) {
+            viewUserDetails(userIndex);
+            // The edit functionality will be handled within the modal
+        }
+
+        function editUserInModal(userIndex) {
+            const users = JSON.parse(localStorage.getItem('portfolioUsers') || '[]');
+            const user = users[userIndex];
+            
+            const content = document.getElementById('userDetailsContent');
+            content.innerHTML = `
+                <h3><i class="fas fa-edit"></i> Edit User Information</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" id="editName" value="${user.name || ''}" placeholder="Enter full name">
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" id="editEmail" value="${user.email || ''}" placeholder="Enter email">
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="tel" id="editPhone" value="${user.phone || ''}" placeholder="Enter phone">
+                    </div>
+                    <div class="form-group">
+                        <label>User Type</label>
+                        <select id="editUserType">
+                            <option value="regular_user" ${(user.userType || 'regular_user') === 'regular_user' ? 'selected' : ''}>Regular User</option>
+                            <option value="premium_user" ${user.userType === 'premium_user' ? 'selected' : ''}>Premium User</option>
+                            <option value="admin" ${user.userType === 'admin' ? 'selected' : ''}>Admin</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select id="editStatus">
+                            <option value="active" ${(user.status || 'active') === 'active' ? 'selected' : ''}>Active</option>
+                            <option value="inactive" ${user.status === 'inactive' ? 'selected' : ''}>Inactive</option>
+                            <option value="suspended" ${user.status === 'suspended' ? 'selected' : ''}>Suspended</option>
+                            <option value="blocked" ${user.status === 'blocked' ? 'selected' : ''}>Blocked</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Date of Birth</label>
+                        <input type="date" id="editDob" value="${user.dateOfBirth || ''}">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Bio</label>
+                    <textarea id="editBio" rows="3" placeholder="User bio...">${user.bio || ''}</textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>Skills (comma separated)</label>
+                    <input type="text" id="editSkills" value="${user.skills || ''}" placeholder="JavaScript, React, Node.js">
+                </div>
+                
+                <div style="display: flex; gap: 15px; margin-top: 20px;">
+                    <button onclick="saveUserEdit(${userIndex})" class="btn btn-success">
+                        <i class="fas fa-save"></i> Save Changes
+                    </button>
+                    <button onclick="viewUserDetails(${userIndex})" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Back to Details
+                    </button>
+                </div>
+            `;
+        }
+
+        function saveUserEdit(userIndex) {
+            const users = JSON.parse(localStorage.getItem('portfolioUsers') || '[]');
+            
+            users[userIndex] = {
+                ...users[userIndex],
+                name: document.getElementById('editName').value,
+                email: document.getElementById('editEmail').value,
+                phone: document.getElementById('editPhone').value,
+                userType: document.getElementById('editUserType').value,
+                status: document.getElementById('editStatus').value,
+                dateOfBirth: document.getElementById('editDob').value,
+                bio: document.getElementById('editBio').value,
+                skills: document.getElementById('editSkills').value,
+                lastModified: new Date().toISOString()
+            };
+            
+            localStorage.setItem('portfolioUsers', JSON.stringify(users));
+            
+            logUserAction(`User edited: ${users[userIndex].name} (${users[userIndex].email})`);
+            
+            loadUsers();
+            closeUserModal();
+            showAlert('User information updated successfully!', 'success');
+        }
+
+        function toggleUserStatus(userIndex) {
+            const users = JSON.parse(localStorage.getItem('portfolioUsers') || '[]');
+            const user = users[userIndex];
+            
+            const currentStatus = user.status || 'active';
+            const newStatus = currentStatus === 'active' ? 'suspended' : 'active';
+            
+            if (!confirm(`Are you sure you want to ${newStatus === 'active' ? 'activate' : 'suspend'} this user?`)) return;
+            
+            users[userIndex].status = newStatus;
+            users[userIndex].statusChangedBy = 'admin';
+            users[userIndex].statusChangedAt = new Date().toISOString();
+            
+            localStorage.setItem('portfolioUsers', JSON.stringify(users));
+            
+            logUserAction(`User status changed: ${user.name} - ${currentStatus} to ${newStatus}`);
+            
+            loadUsers();
+            showAlert(`User ${newStatus === 'active' ? 'activated' : 'suspended'} successfully!`, 'success');
+        }
+
+        function changeUserType(userIndex) {
+            const users = JSON.parse(localStorage.getItem('portfolioUsers') || '[]');
+            const user = users[userIndex];
+            
+            const newType = prompt(`Change user type for ${user.name}:\n\n1. regular_user\n2. premium_user\n3. admin\n\nEnter new type:`, user.userType || 'regular_user');
+            
+            if (!newType || !['regular_user', 'premium_user', 'admin'].includes(newType)) {
+                showAlert('Invalid user type!', 'error');
+                return;
+            }
+            
+            users[userIndex].userType = newType;
+            users[userIndex].typeChangedBy = 'admin';
+            users[userIndex].typeChangedAt = new Date().toISOString();
+            
+            localStorage.setItem('portfolioUsers', JSON.stringify(users));
+            
+            logUserAction(`User type changed: ${user.name} - ${user.userType} to ${newType}`);
+            
+            loadUsers();
+            closeUserModal();
+            showAlert('User type updated successfully!', 'success');
+        }
+
+        function sendUserMessage(userIndex) {
+            const users = JSON.parse(localStorage.getItem('portfolioUsers') || '[]');
+            const user = users[userIndex];
+            
+            const subject = prompt(`Send message to ${user.name}:\n\nSubject:`);
+            if (!subject) return;
+            
+            const message = prompt('Message content:');
+            if (!message) return;
+            
+            // Store message in user's messages array
+            if (!user.messages) user.messages = [];
+            user.messages.push({
+                id: Date.now(),
+                from: 'admin',
+                subject: subject,
+                content: message,
+                date: new Date().toISOString(),
+                read: false
+            });
+            
+            users[userIndex] = user;
+            localStorage.setItem('portfolioUsers', JSON.stringify(users));
+            
+            logUserAction(`Message sent to user: ${user.name} - Subject: ${subject}`);
+            
+            showAlert('Message sent successfully!', 'success');
+        }
+
+        function resetUserPassword(userIndex) {
+            const users = JSON.parse(localStorage.getItem('portfolioUsers') || '[]');
+            const user = users[userIndex];
+            
+            if (!confirm(`Reset password for ${user.name}? A temporary password will be generated.`)) return;
+            
+            const tempPassword = 'TempPass' + Math.random().toString(36).substr(2, 8);
+            
+            users[userIndex].password = tempPassword; // In real app, this should be hashed
+            users[userIndex].passwordReset = true;
+            users[userIndex].passwordResetAt = new Date().toISOString();
+            users[userIndex].passwordResetBy = 'admin';
+            
+            localStorage.setItem('portfolioUsers', JSON.stringify(users));
+            
+            logUserAction(`Password reset for user: ${user.name}`);
+            
+            alert(`Password reset successfully!\n\nTemporary Password: ${tempPassword}\n\nUser will be prompted to change this password on next login.`);
+        }
+
+        function loginAsUser(userIndex) {
+            const users = JSON.parse(localStorage.getItem('portfolioUsers') || '[]');
+            const user = users[userIndex];
+            
+            if (!confirm(`Login as ${user.name}? This will open their profile in a new tab.`)) return;
+            
+            // Set temporary user session
+            localStorage.setItem('tempUserSession', JSON.stringify(user));
+            localStorage.setItem('currentUser', JSON.stringify(user));
+            
+            logUserAction(`Admin logged in as user: ${user.name}`);
+            
+            // Open user profile page
+            window.open('user-profile.html', '_blank');
+            
+            showAlert('Logged in as user! Check new tab.', 'success');
+        }
+
+        // Bulk Operations
+        function selectAllUsers() {
+            const checkboxes = document.querySelectorAll('.user-checkbox');
+            const selectAllCheck = document.getElementById('selectAllCheck');
+            
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = selectAllCheck.checked;
+            });
+        }
+
+        function toggleSelectAll() {
+            const checkboxes = document.querySelectorAll('.user-checkbox');
+            const selectAllCheck = document.getElementById('selectAllCheck');
+            const checkedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
+            
+            selectAllCheck.checked = checkedCount === checkboxes.length;
+            selectAllCheck.indeterminate = checkedCount > 0 && checkedCount < checkboxes.length;
+        }
+
+        function bulkAction() {
+            const checkedBoxes = document.querySelectorAll('.user-checkbox:checked');
+            
+            if (checkedBoxes.length === 0) {
+                showAlert('Please select users for bulk action.', 'warning');
+                return;
+            }
+            
+            const action = prompt(`Bulk action for ${checkedBoxes.length} users:\n\n1. activate\n2. suspend\n3. delete\n4. change_type\n5. send_message\n\nEnter action:`);
+            
+            if (!action) return;
+            
+            const userIndices = Array.from(checkedBoxes).map(cb => parseInt(cb.dataset.index));
+            
+            switch(action) {
+                case 'activate':
+                case 'suspend':
+                    bulkChangeStatus(userIndices, action);
+                    break;
+                case 'delete':
+                    bulkDeleteUsers(userIndices);
+                    break;
+                case 'change_type':
+                    bulkChangeType(userIndices);
+                    break;
+                case 'send_message':
+                    showBulkMessageModal();
+                    break;
+                default:
+                    showAlert('Invalid action!', 'error');
+            }
+        }
+
+        function bulkChangeStatus(userIndices, status) {
+            if (!confirm(`${status} ${userIndices.length} selected users?`)) return;
+            
+            const users = JSON.parse(localStorage.getItem('portfolioUsers') || '[]');
+            
+            userIndices.forEach(index => {
+                users[index].status = status === 'activate' ? 'active' : 'suspended';
+                users[index].statusChangedBy = 'admin';
+                users[index].statusChangedAt = new Date().toISOString();
+            });
+            
+            localStorage.setItem('portfolioUsers', JSON.stringify(users));
+            
+            logUserAction(`Bulk ${status}: ${userIndices.length} users`);
+            
+            loadUsers();
+            showAlert(`${userIndices.length} users ${status === 'activate' ? 'activated' : 'suspended'} successfully!`, 'success');
+        }
+
+        function bulkDeleteUsers(userIndices) {
+            if (!confirm(`DELETE ${userIndices.length} selected users? This cannot be undone!`)) return;
+            
+            const confirmation = prompt(`Type "DELETE USERS" to confirm deletion of ${userIndices.length} users:`);
+            if (confirmation !== 'DELETE USERS') return;
+            
+            let users = JSON.parse(localStorage.getItem('portfolioUsers') || '[]');
+            
+            // Sort indices in descending order to avoid index shifting
+            userIndices.sort((a, b) => b - a);
+            
+            userIndices.forEach(index => {
+                users.splice(index, 1);
+            });
+            
+            localStorage.setItem('portfolioUsers', JSON.stringify(users));
+            
+            logUserAction(`Bulk delete: ${userIndices.length} users`);
+            
+            loadUsers();
+            updateDashboardStats();
+            showAlert(`${userIndices.length} users deleted successfully!`, 'success');
+        }
+
+        function bulkChangeType(userIndices) {
+            const newType = prompt(`Change type for ${userIndices.length} users:\n\n1. regular_user\n2. premium_user\n3. admin\n\nEnter new type:`);
+            
+            if (!newType || !['regular_user', 'premium_user', 'admin'].includes(newType)) {
+                showAlert('Invalid user type!', 'error');
+                return;
+            }
+            
+            const users = JSON.parse(localStorage.getItem('portfolioUsers') || '[]');
+            
+            userIndices.forEach(index => {
+                users[index].userType = newType;
+                users[index].typeChangedBy = 'admin';
+                users[index].typeChangedAt = new Date().toISOString();
+            });
+            
+            localStorage.setItem('portfolioUsers', JSON.stringify(users));
+            
+            logUserAction(`Bulk type change: ${userIndices.length} users to ${newType}`);
+            
+            loadUsers();
+            showAlert(`${userIndices.length} users updated to ${newType}!`, 'success');
+        }
+
+        // Bulk Messaging
+        function showBulkMessageModal() {
+            document.getElementById('bulkMessageModal').style.display = 'block';
+        }
+
+        function sendBulkMessage() {
+            document.getElementById('bulkMessageModal').style.display = 'block';
+        }
+
+        function closeBulkMessageModal() {
+            document.getElementById('bulkMessageModal').style.display = 'none';
+        }
+
+        function sendBulkMessageNow() {
+            const subject = document.getElementById('messageSubject').value.trim();
+            const content = document.getElementById('messageContent').value.trim();
+            const type = document.getElementById('messageType').value;
+            
+            if (!subject || !content) {
+                showAlert('Please fill in subject and message content.', 'error');
+                return;
+            }
+            
+            const users = JSON.parse(localStorage.getItem('portfolioUsers') || '[]');
+            
+            users.forEach(user => {
+                if (!user.messages) user.messages = [];
+                user.messages.push({
+                    id: Date.now() + Math.random(),
+                    from: 'admin',
+                    subject: subject,
+                    content: content,
+                    type: type,
+                    date: new Date().toISOString(),
+                    read: false
+                });
+            });
+            
+            localStorage.setItem('portfolioUsers', JSON.stringify(users));
+            
+            logUserAction(`Bulk message sent to ${users.length} users: ${subject}`);
+            
+            closeBulkMessageModal();
+            showAlert(`Message sent to ${users.length} users successfully!`, 'success');
+            
+            // Clear form
+            document.getElementById('messageSubject').value = '';
+            document.getElementById('messageContent').value = '';
+        }
+
+        // User Analytics
+        function showUserAnalytics() {
+            const users = JSON.parse(localStorage.getItem('portfolioUsers') || '[]');
+            
+            const analytics = {
+                total: users.length,
+                active: users.filter(u => (u.status || 'active') === 'active').length,
+                suspended: users.filter(u => u.status === 'suspended').length,
+                blocked: users.filter(u => u.status === 'blocked').length,
+                regular: users.filter(u => (u.userType || 'regular_user') === 'regular_user').length,
+                premium: users.filter(u => u.userType === 'premium_user').length,
+                admin: users.filter(u => u.userType === 'admin').length,
+                thisMonth: users.filter(u => {
+                    const regDate = new Date(u.registrationDate);
+                    const thisMonth = new Date();
+                    thisMonth.setDate(1);
+                    return regDate >= thisMonth;
+                }).length
+            };
+            
+            alert(`User Analytics Report\n\n` +
+                  `Total Users: ${analytics.total}\n` +
+                  `Active: ${analytics.active}\n` +
+                  `Suspended: ${analytics.suspended}\n` +
+                  `Blocked: ${analytics.blocked}\n\n` +
+                  `User Types:\n` +
+                  `Regular: ${analytics.regular}\n` +
+                  `Premium: ${analytics.premium}\n` +
+                  `Admin: ${analytics.admin}\n\n` +
+                  `New This Month: ${analytics.thisMonth}`);
+        }
+
+        // Utility Functions
+        function exportUserData() {
+            const users = JSON.parse(localStorage.getItem('portfolioUsers') || '[]');
+            const exportData = users.map(user => ({
+                name: user.name,
+                email: user.email,
+                userType: user.userType,
+                status: user.status,
+                registrationDate: user.registrationDate,
+                lastLogin: user.lastLogin
+            }));
+            
+            const dataStr = JSON.stringify(exportData, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(dataBlob);
+            link.download = `user-data-export-${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            
+            logUserAction(`User data exported: ${users.length} users`);
+            showAlert('User data exported successfully!', 'success');
+        }
+
+        function clearInactiveUsers() {
+            const users = JSON.parse(localStorage.getItem('portfolioUsers') || '[]');
+            const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+            
+            const inactiveUsers = users.filter(user => {
+                const lastLogin = user.lastLogin ? new Date(user.lastLogin) : new Date(user.registrationDate);
+                return lastLogin < thirtyDaysAgo;
+            });
+            
+            if (inactiveUsers.length === 0) {
+                showAlert('No inactive users found.', 'info');
+                return;
+            }
+            
+            if (!confirm(`Remove ${inactiveUsers.length} inactive users (no activity in 30+ days)?`)) return;
+            
+            const activeUsers = users.filter(user => {
+                const lastLogin = user.lastLogin ? new Date(user.lastLogin) : new Date(user.registrationDate);
+                return lastLogin >= thirtyDaysAgo;
+            });
+            
+            localStorage.setItem('portfolioUsers', JSON.stringify(activeUsers));
+            
+            logUserAction(`Cleared ${inactiveUsers.length} inactive users`);
+            
+            loadUsers();
+            updateDashboardStats();
+            showAlert(`${inactiveUsers.length} inactive users removed!`, 'success');
+        }
+
+        function logUserAction(action) {
+            const logs = JSON.parse(localStorage.getItem('userManagementLogs') || '[]');
+            logs.unshift({
+                action: action,
+                timestamp: new Date().toISOString(),
+                admin: 'main_admin'
+            });
+            
+            // Keep only last 100 logs
+            localStorage.setItem('userManagementLogs', JSON.stringify(logs.slice(0, 100)));
+        }
+
+        function refreshUsers() {
+            loadUsers();
+            updateUserStats();
+            showAlert('User data refreshed!', 'success');
+        }
+
+        // Authentication & Password Management
+        function adminLogin(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            // Get stored admin credentials (default: admin/admin123)
+            const adminCredentials = JSON.parse(localStorage.getItem('adminCredentials') || '{"username":"admin","password":"admin123"}');
+            
+            if (username === adminCredentials.username && password === adminCredentials.password) {
+                // Successful login
+                localStorage.setItem('adminLoggedIn', 'true');
+                localStorage.setItem('adminLoginTime', new Date().toISOString());
+                
+                // Hide login screen
+                document.getElementById('loginScreen').style.display = 'none';
+                
+                // Initialize admin panel
+                initializeAdminPanel();
+                
+                showAlert(`🎉 Welcome back, ${username}! Admin panel loaded successfully.`, 'success');
+                
+                // Log the login
+                logUserAction(`Admin login successful: ${username}`);
+            } else {
+                showAlert('❌ Invalid username or password!', 'error');
+                
+                // Log failed attempt
+                logUserAction(`Failed admin login attempt: ${username}`);
+                
+                // Clear password field
+                document.getElementById('loginPassword').value = '';
+            }
+        }
+
+        function togglePasswordVisibility(inputId) {
+            const input = document.getElementById(inputId);
+            const icon = document.querySelector(`#${inputId} + button i`) || document.getElementById(inputId + 'Eye');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                if (icon) icon.className = 'fas fa-eye-slash';
+            } else {
+                input.type = 'password';
+                if (icon) icon.className = 'fas fa-eye';
+            }
+        }
+
+        function emergencyAccess() {
+            const confirmAccess = prompt('🚨 Emergency Access Code Required:\n(Contact system administrator if you don\'t have the code)');
+            
+            // More secure emergency codes
+            const validCodes = [
+                'EMG_ADMIN_2025_SECURE',
+                'OVERRIDE_ADMIN_PANEL_2025',
+                'EMERGENCY_BYPASS_SECURE'
+            ];
+            
+            if (validCodes.includes(confirmAccess)) {
+                localStorage.setItem('adminLoggedIn', 'true');
+                localStorage.setItem('adminLoginTime', new Date().toISOString());
+                document.getElementById('loginScreen').style.display = 'none';
+                
+                showAlert('🚨 Emergency access granted! Please change admin password immediately for security.', 'warning');
+                logUserAction('Emergency access used with valid code');
+                
+                // Force password change after emergency access
+                setTimeout(() => {
+                    alert('⚠️ SECURITY NOTICE: You must change the admin password now!');
+                    changeAdminPassword();
+                }, 1500);
+            } else {
+                showAlert('❌ Invalid emergency code! Contact system administrator.', 'error');
+                logUserAction('Failed emergency access attempt');
+            }
+        }
+
+        function showForgotPassword() {
+            const resetCode = prompt('🔐 Password Reset Code:\n(Contact administrator for reset code)');
+            
+            // More secure reset codes
+            const validResetCodes = [
+                'RESET_ADMIN_SECURE_2025',
+                'PWD_RESET_AUTHORIZED_2025',
+                'ADMIN_PASSWORD_OVERRIDE'
+            ];
+            
+            if (validResetCodes.includes(resetCode)) {
+                const newPassword = prompt('Enter new admin password (minimum 6 characters):');
+                if (newPassword && newPassword.length >= 6) {
+                    const adminCredentials = JSON.parse(localStorage.getItem('adminCredentials') || '{"username":"admin","password":"admin123"}');
+                    adminCredentials.password = newPassword;
+                    adminCredentials.resetDate = new Date().toISOString();
+                    localStorage.setItem('adminCredentials', JSON.stringify(adminCredentials));
+                    
+                    showAlert('✅ Password reset successful! You can now login with your new password.', 'success');
+                    logUserAction('Admin password reset via authorized reset code');
+                } else {
+                    showAlert('❌ Password must be at least 6 characters long!', 'error');
+                }
+            } else {
+                showAlert('❌ Invalid reset code! Contact system administrator for authorized reset.', 'error');
+                logUserAction('Failed password reset attempt');
+            }
+        }
+
+        function changeAdminPassword() {
+            document.getElementById('passwordChangeModal').style.display = 'block';
+        }
+
+        function closePasswordModal() {
+            document.getElementById('passwordChangeModal').style.display = 'none';
+            
+            // Clear form
+            document.getElementById('passwordChangeForm').reset();
+        }
+
+        function updateAdminPassword(event) {
+            event.preventDefault();
+            
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            // Get current admin credentials
+            const adminCredentials = JSON.parse(localStorage.getItem('adminCredentials') || '{"username":"admin","password":"admin123"}');
+            
+            // Verify current password
+            if (currentPassword !== adminCredentials.password) {
+                showAlert('❌ Current password is incorrect!', 'error');
+                return;
+            }
+            
+            // Check new password length
+            if (newPassword.length < 6) {
+                showAlert('❌ New password must be at least 6 characters!', 'error');
+                return;
+            }
+            
+            // Check if passwords match
+            if (newPassword !== confirmPassword) {
+                showAlert('❌ New passwords do not match!', 'error');
+                return;
+            }
+            
+            // Check if new password is different from current
+            if (newPassword === currentPassword) {
+                showAlert('❌ New password must be different from current password!', 'error');
+                return;
+            }
+            
+            // Update password
+            adminCredentials.password = newPassword;
+            adminCredentials.lastChanged = new Date().toISOString();
+            adminCredentials.changedBy = adminCredentials.username;
+            localStorage.setItem('adminCredentials', JSON.stringify(adminCredentials));
+            
+            // Log the change
+            logUserAction('Admin password changed successfully');
+            
+            // Close modal and show success
+            closePasswordModal();
+            showAlert('🔐 Admin password updated successfully! Please remember your new password.', 'success');
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout from admin panel?')) {
+                localStorage.removeItem('adminLoggedIn');
+                localStorage.removeItem('adminLoginTime');
+                
+                logUserAction('Admin logged out');
+                
+                // Show login screen
+                document.getElementById('loginScreen').style.display = 'block';
+                
+                // Clear sensitive data from memory
+                setTimeout(() => {
+                    showAlert('👋 Logged out successfully! Login again to access admin panel.', 'info');
+                }, 500);
+            }
+        }
+
+        function checkAdminSession() {
+            const isLoggedIn = localStorage.getItem('adminLoggedIn');
+            const loginTime = localStorage.getItem('adminLoginTime');
+            
+            if (!isLoggedIn) {
+                document.getElementById('loginScreen').style.display = 'block';
+                return false;
+            }
+            
+            // Check if session is expired (24 hours)
+            if (loginTime) {
+                const now = new Date();
+                const login = new Date(loginTime);
+                const hoursDiff = (now - login) / (1000 * 60 * 60);
+                
+                if (hoursDiff > 24) {
+                    localStorage.removeItem('adminLoggedIn');
+                    localStorage.removeItem('adminLoginTime');
+                    document.getElementById('loginScreen').style.display = 'block';
+                    showAlert('⏰ Session expired! Please login again.', 'warning');
+                    return false;
+                }
+            }
+            
+            return true;
+        }
+
+        // Contact Messages
+        function loadMessages() {
+            const messages = JSON.parse(localStorage.getItem('portfolioMessages') || '[]');
+            const messagesList = document.getElementById('messagesList');
+
+            if (messages.length === 0) {
+                messagesList.innerHTML = '<p>No contact messages yet.</p>';
+                return;
+            }
+
+            let html = '<table class="data-table"><thead><tr><th>Name</th><th>Email</th><th>Subject</th><th>Date</th><th>Actions</th></tr></thead><tbody>';
+            
+            messages.forEach((message, index) => {
+                html += `
+                    <tr>
+                        <td><strong>${message.name || 'Anonymous'}</strong></td>
+                        <td>${message.email || 'No email'}</td>
+                        <td>${message.subject || 'No subject'}</td>
+                        <td>${message.date || 'Unknown'}</td>
+                        <td>
+                            <button onclick="viewMessage(${index})" class="btn btn-info" style="padding: 5px 10px; font-size: 12px;">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button onclick="deleteMessage(${index})" class="btn btn-danger" style="padding: 5px 10px; font-size: 12px;">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            html += '</tbody></table>';
+            messagesList.innerHTML = html;
+        }
+
+        function viewMessage(messageIndex) {
+            const messages = JSON.parse(localStorage.getItem('portfolioMessages') || '[]');
+            const message = messages[messageIndex];
+            
+            if (message) {
+                alert(`
+From: ${message.name} (${message.email})
+Subject: ${message.subject}
+Date: ${message.date}
+
+Message:
+${message.message}
+                `);
+            }
+        }
+
+        function deleteMessage(messageIndex) {
+            if (!confirm('Are you sure you want to delete this message?')) return;
+            
+            let messages = JSON.parse(localStorage.getItem('portfolioMessages') || '[]');
+            messages.splice(messageIndex, 1);
+            localStorage.setItem('portfolioMessages', JSON.stringify(messages));
+            
+            loadMessages();
+            updateDashboardStats();
+            showAlert('Message deleted successfully!', 'success');
+        }
+
+        // Settings Management
+        function saveSettings() {
+            const settings = {
+                siteTitle: document.getElementById('siteTitle').value,
+                siteDescription: document.getElementById('siteDescription').value,
+                contactEmail: document.getElementById('contactEmail').value,
+                socialLinks: document.getElementById('socialLinks').value,
+                lastUpdated: new Date().toISOString()
+            };
+
+            localStorage.setItem('portfolioSettings', JSON.stringify(settings));
+            showAlert('Site settings saved successfully!', 'success');
+        }
+
+        // Analytics
+        function loadAnalytics() {
+            const users = JSON.parse(localStorage.getItem('portfolioUsers') || '[]');
+            const projects = JSON.parse(localStorage.getItem('portfolioProjects') || '[]');
+            const messages = JSON.parse(localStorage.getItem('portfolioMessages') || '[]');
+            
+            const analyticsData = document.getElementById('analyticsData');
+            
+            let html = `
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <i class="fas fa-calendar"></i>
+                        <h3>${new Date().toLocaleDateString()}</h3>
+                        <p>Last Updated</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-database"></i>
+                        <h3>${(JSON.stringify(localStorage).length / 1024).toFixed(2)} KB</h3>
+                        <p>Data Storage Used</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-clock"></i>
+                        <h3>${users.length + projects.length}</h3>
+                        <p>Total Records</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-chart-bar"></i>
+                        <h3>100%</h3>
+                        <p>System Health</p>
+                    </div>
+                </div>
+            `;
+            
+            analyticsData.innerHTML = html;
+        }
+
+        // Backup & Restore
+        function backupData() {
+            const data = {
+                users: JSON.parse(localStorage.getItem('portfolioUsers') || '[]'),
+                projects: JSON.parse(localStorage.getItem('portfolioProjects') || '[]'),
+                gallery: JSON.parse(localStorage.getItem('portfolioGallery') || '[]'),
+                messages: JSON.parse(localStorage.getItem('portfolioMessages') || '[]'),
+                profile: JSON.parse(localStorage.getItem('portfolioProfile') || '{}'),
+                settings: JSON.parse(localStorage.getItem('portfolioSettings') || '{}'),
+                backupDate: new Date().toISOString()
+            };
+
+            const dataStr = JSON.stringify(data, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(dataBlob);
+            link.download = `portfolio-backup-${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            
+            showAlert('Backup downloaded successfully!', 'success');
+        }
+
+        function exportUsers() {
+            const users = JSON.parse(localStorage.getItem('portfolioUsers') || '[]');
+            const dataStr = JSON.stringify(users, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(dataBlob);
+            link.download = `users-export-${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            
+            showAlert('Users exported successfully!', 'success');
+        }
+
+        function exportProjects() {
+            const projects = JSON.parse(localStorage.getItem('portfolioProjects') || '[]');
+            const dataStr = JSON.stringify(projects, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(dataBlob);
+            link.download = `projects-export-${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            
+            showAlert('Projects exported successfully!', 'success');
+        }
+
+        function restoreData() {
+            const fileInput = document.getElementById('restoreFile');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                showAlert('Please select a backup file to restore.', 'error');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    
+                    if (data.users) localStorage.setItem('portfolioUsers', JSON.stringify(data.users));
+                    if (data.projects) localStorage.setItem('portfolioProjects', JSON.stringify(data.projects));
+                    if (data.gallery) localStorage.setItem('portfolioGallery', JSON.stringify(data.gallery));
+                    if (data.messages) localStorage.setItem('portfolioMessages', JSON.stringify(data.messages));
+                    if (data.profile) localStorage.setItem('portfolioProfile', JSON.stringify(data.profile));
+                    if (data.settings) localStorage.setItem('portfolioSettings', JSON.stringify(data.settings));
+                    
+                    updateDashboardStats();
+                    loadProfile();
+                    showAlert('Data restored successfully! Page will reload.', 'success');
+                    
+                    setTimeout(() => location.reload(), 2000);
+                } catch (error) {
+                    showAlert('Error restoring data. Please check your backup file.', 'error');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function clearAllData() {
+            if (!confirm('Are you sure you want to clear ALL website data? This cannot be undone!')) return;
+            
+            const confirmed = prompt('Type "DELETE ALL DATA" to confirm:');
+            if (confirmed !== 'DELETE ALL DATA') return;
+            
+            localStorage.clear();
+            showAlert('All data cleared successfully! Page will reload.', 'info');
+            setTimeout(() => location.reload(), 2000);
+        }
+
+        // Utility Functions
+        function showAlert(message, type = 'info') {
+            const alertContainer = document.getElementById('alertContainer');
+            const alert = document.createElement('div');
+            alert.className = `alert ${type} show`;
+            alert.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-triangle' : 'info-circle'}"></i>
+                ${message}
+            `;
+            
+            alertContainer.appendChild(alert);
+            
+            setTimeout(() => {
+                alert.classList.remove('show');
+                setTimeout(() => alertContainer.removeChild(alert), 300);
+            }, 5000);
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('adminLoggedIn');
+                window.location.href = 'index.html';
+            }
+        }
+
+        // Initialize on load
+        console.log('✅ Portfolio Admin Panel Ready - All Features Loaded!');
+    </script>
+</body>
+</html>
