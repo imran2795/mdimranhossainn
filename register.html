@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Register - MD Imran Hossain Portfolio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <!-- Bootstrap CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- AOS Animation -->
+    <link href="css/aos.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="css/style.css" rel="stylesheet">
+    
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Animated Background */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(45deg, #667eea, #764ba2, #f093fb, #f5576c);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        /* Floating Particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 6s infinite linear;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% {
+                transform: translateY(-10vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Registration Container */
+        .register-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            margin: 50px auto;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+        }
+        
+        .register-title {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            font-weight: 600;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-label {
+            color: white;
+            font-weight: 500;
+            margin-bottom: 8px;
+            display: block;
+        }
+        
+        .form-control {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            color: white;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+            outline: none;
+            color: white;
+        }
+        
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .register-btn {
+            background: linear-gradient(45deg, #6bcf7f, #4facfe);
+            border: none;
+            border-radius: 25px;
+            padding: 15px 40px;
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(107, 207, 127, 0.4);
+        }
+        
+        .register-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(107, 207, 127, 0.6);
+        }
+        
+        .register-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .login-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .login-link a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+        
+        .success-message {
+            background: rgba(46, 204, 113, 0.9);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            display: none;
+        }
+        
+        .error-message {
+            background: rgba(231, 76, 60, 0.9);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            display: none;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg"></div>
+    
+    <!-- Floating Particles -->
+    <div class="particles" id="particles"></div>
+    
+    <div class="container">
+        <div class="register-container" data-aos="fade-up" data-aos-duration="1000">
+            <h2 class="register-title">
+                <i class="fas fa-user-plus"></i>
+                Create Account
+            </h2>
+            
+            <!-- Success/Error Messages -->
+            <div id="successMessage" class="success-message">
+                <i class="fas fa-check-circle"></i>
+                <span id="successText"></span>
+            </div>
+            
+            <div id="errorMessage" class="error-message">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span id="errorText"></span>
+            </div>
+            
+            <!-- Registration Form -->
+            <form id="registerForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">First Name *</label>
+                        <input type="text" id="firstName" class="form-control" placeholder="Enter first name" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Last Name *</label>
+                        <input type="text" id="lastName" class="form-control" placeholder="Enter last name" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Email Address *</label>
+                    <input type="email" id="email" class="form-control" placeholder="Enter email address" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Phone Number *</label>
+                    <input type="tel" id="phone" class="form-control" placeholder="+880 1234567890" required>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Password *</label>
+                        <input type="password" id="password" class="form-control" placeholder="Enter password" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Confirm Password *</label>
+                        <input type="password" id="confirmPassword" class="form-control" placeholder="Confirm password" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Profession</label>
+                    <input type="text" id="profession" class="form-control" placeholder="e.g., Software Developer">
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Account Type</label>
+                        <select id="accountType" class="form-control">
+                            <option value="individual">Individual</option>
+                            <option value="business">Business</option>
+                            <option value="freelancer">Freelancer</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Gender</label>
+                        <select id="gender" class="form-control">
+                            <option value="">Select Gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Date of Birth</label>
+                    <input type="date" id="dateOfBirth" class="form-control">
+                </div>
+                
+                <button type="submit" id="registerBtn" class="register-btn">
+                    <i class="fas fa-user-plus"></i>
+                    Create Account
+                </button>
+            </form>
+            
+            <div class="login-link">
+                Already have an account? 
+                <a href="login.html">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Login here
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/aos.js"></script>
+    
+    <script>
+        // Initialize AOS
+        AOS.init();
+        
+        // Create floating particles
+        function createParticles() {
+            const particles = document.getElementById('particles');
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.width = Math.random() * 6 + 2 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (Math.random() * 4 + 4) + 's';
+                particles.appendChild(particle);
+            }
+        }
+        
+        // Show message function
+        function showMessage(message, type = 'success') {
+            const successDiv = document.getElementById('successMessage');
+            const errorDiv = document.getElementById('errorMessage');
+            
+            if (type === 'success') {
+                document.getElementById('successText').textContent = message;
+                successDiv.style.display = 'block';
+                errorDiv.style.display = 'none';
+            } else {
+                document.getElementById('errorText').textContent = message;
+                errorDiv.style.display = 'block';
+                successDiv.style.display = 'none';
+            }
+            
+            // Auto hide after 5 seconds
+            setTimeout(() => {
+                successDiv.style.display = 'none';
+                errorDiv.style.display = 'none';
+            }, 5000);
+        }
+        
+        // Form validation
+        function validateForm() {
+            const firstName = document.getElementById('firstName').value.trim();
+            const lastName = document.getElementById('lastName').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if (!firstName) {
+                showMessage('First name is required', 'error');
+                return false;
+            }
+            
+            if (!lastName) {
+                showMessage('Last name is required', 'error');
+                return false;
+            }
+            
+            if (!email) {
+                showMessage('Email is required', 'error');
+                return false;
+            }
+            
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                showMessage('Please enter a valid email address', 'error');
+                return false;
+            }
+            
+            if (!phone) {
+                showMessage('Phone number is required', 'error');
+                return false;
+            }
+            
+            if (!password) {
+                showMessage('Password is required', 'error');
+                return false;
+            }
+            
+            if (password.length < 6) {
+                showMessage('Password must be at least 6 characters long', 'error');
+                return false;
+            }
+            
+            if (password !== confirmPassword) {
+                showMessage('Passwords do not match', 'error');
+                return false;
+            }
+            
+            return true;
+        }
+        
+        // Form submission
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (!validateForm()) {
+                return;
+            }
+            
+            const registerBtn = document.getElementById('registerBtn');
+            const originalText = registerBtn.innerHTML;
+            
+            // Show loading
+            registerBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Account...';
+            registerBtn.disabled = true;
+            
+            // Collect form data
+            const formData = {
+                firstName: document.getElementById('firstName').value.trim(),
+                lastName: document.getElementById('lastName').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                phone: document.getElementById('phone').value.trim(),
+                password: document.getElementById('password').value,
+                profession: document.getElementById('profession').value.trim(),
+                accountType: document.getElementById('accountType').value,
+                gender: document.getElementById('gender').value,
+                dateOfBirth: document.getElementById('dateOfBirth').value,
+                registrationDate: new Date().toISOString()
+            };
+            
+            // Simulate account creation
+            setTimeout(() => {
+                try {
+                    // Get existing users
+                    const users = JSON.parse(localStorage.getItem('portfolioUsers') || '[]');
+                    
+                    // Check if email already exists
+                    if (users.find(user => user.email === formData.email)) {
+                        showMessage('This email is already registered. Please use a different email.', 'error');
+                        registerBtn.innerHTML = originalText;
+                        registerBtn.disabled = false;
+                        return;
+                    }
+                    
+                    // Add new user
+                    const newUser = {
+                        id: Date.now(),
+                        ...formData,
+                        userType: 'regular_user',
+                        isAdmin: false,
+                        isActive: true
+                    };
+                    
+                    // Remove confirm password
+                    delete newUser.confirmPassword;
+                    
+                    // Save to users array
+                    users.push(newUser);
+                    localStorage.setItem('portfolioUsers', JSON.stringify(users));
+                    
+                    // Save to pendingUser for profile
+                    localStorage.setItem('pendingUser', JSON.stringify(formData));
+                    
+                    // Show success
+                    showMessage('Account created successfully! Redirecting to login...', 'success');
+                    
+                    // Redirect to login after 3 seconds
+                    setTimeout(() => {
+                        window.location.href = 'login.html';
+                    }, 3000);
+                    
+                } catch (error) {
+                    console.error('Registration error:', error);
+                    showMessage('Registration failed. Please try again.', 'error');
+                    registerBtn.innerHTML = originalText;
+                    registerBtn.disabled = false;
+                }
+            }, 2000);
+        });
+        
+        // Initialize particles when page loads
+        window.addEventListener('load', function() {
+            createParticles();
+        });
+    </script>
+</body>
+</html>

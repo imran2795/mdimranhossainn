@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Login Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; }
+        .test-container { max-width: 400px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        input { width: 100%; padding: 12px; margin: 10px 0; border: 2px solid #ddd; border-radius: 5px; box-sizing: border-box; }
+        button { width: 100%; padding: 15px; background: #667eea; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; margin: 10px 0; }
+        button:hover { background: #5a6fd8; }
+        .result { margin: 20px 0; padding: 15px; border-radius: 5px; }
+        .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .info { background: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h2>🔐 Admin Login Test</h2>
+        <p>Test your admin credentials before using the main panel.</p>
+        
+        <input type="email" id="testEmail" placeholder="Email: mdimranhossain1509@gmail.com" value="mdimranhossain1509@gmail.com">
+        <input type="password" id="testPassword" placeholder="Password: ImRaN15092001" value="ImRaN15092001">>
+        
+        <button onclick="testLogin()">🚀 Test Login</button>
+        <button onclick="openAdminPanel()" style="background: #28a745;">📋 Open Admin Panel</button>
+        <button onclick="clearLoginData()" style="background: #dc3545;">🧹 Clear Login Data</button>
+        
+        <div id="result"></div>
+        
+        <div class="info">
+            <strong>Default Credentials:</strong><br>
+            Email: mdimranhossain1509@gmail.com<br>
+            Password: ImRaN15092001
+        </div>
+        
+        <div class="info">
+            <strong>If password changed:</strong><br>
+            Use your new password from Settings
+        </div>
+    </div>
+    
+    <script>
+        function testLogin() {
+            const email = document.getElementById('testEmail').value;
+            const password = document.getElementById('testPassword').value;
+            const resultDiv = document.getElementById('result');
+            
+            // Get stored password or use default
+            const storedPassword = localStorage.getItem('adminPassword') || 'ImRaN15092001';
+            
+            console.log('Testing login with:');
+            console.log('Email:', email);
+            console.log('Password length:', password.length);
+            console.log('Stored password length:', storedPassword.length);
+            console.log('Passwords match:', password === storedPassword);
+            
+            if (email === 'mdimranhossain1509@gmail.com' && password === storedPassword) {
+                resultDiv.innerHTML = `
+                    <div class="success">
+                        ✅ <strong>Login Test Successful!</strong><br>
+                        Credentials are correct. You can now login to the admin panel.
+                    </div>
+                `;
+                localStorage.setItem('adminLoggedIn', 'true');
+            } else {
+                let errorMsg = '❌ <strong>Login Test Failed!</strong><br>';
+                if (email !== 'mdimranhossain1509@gmail.com') {
+                    errorMsg += 'Email is incorrect. ';
+                }
+                if (password !== storedPassword) {
+                    errorMsg += 'Password is incorrect. ';
+                }
+                errorMsg += '<br>Please check your credentials.';
+                
+                resultDiv.innerHTML = `<div class="error">${errorMsg}</div>`;
+            }
+        }
+        
+        function openAdminPanel() {
+            window.open('admin.html', '_blank');
+        }
+        
+        function clearLoginData() {
+            localStorage.removeItem('adminLoggedIn');
+            localStorage.removeItem('adminPassword');
+            localStorage.removeItem('adminLoginHistory');
+            document.getElementById('result').innerHTML = `
+                <div class="success">
+                    ✅ <strong>Login Data Cleared!</strong><br>
+                    All admin login data has been cleared. Try logging in again.
+                </div>
+            `;
+            // Reset form to default values
+            document.getElementById('testEmail').value = 'mdimranhossain1509@gmail.com';
+            document.getElementById('testPassword').value = 'ImRaN15092001';
+        }
+        
+        // Show current stored password for debugging
+        const storedPassword = localStorage.getItem('adminPassword');
+        if (storedPassword && storedPassword !== 'ImRaN15092001') {
+            document.getElementById('result').innerHTML = `
+                <div class="info">
+                    <strong>Note:</strong> You have a custom password set.<br>
+                    Clear the password field and enter your custom password.
+                </div>
+            `;
+            document.getElementById('testPassword').value = '';
+            document.getElementById('testPassword').placeholder = 'Enter your custom password';
+        }
+    </script>
+</body>
+</html>

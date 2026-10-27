@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login State Test</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .status { padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .logged-in { background: #d4edda; color: #155724; }
+        .logged-out { background: #f8d7da; color: #721c24; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h2>User Login State Test</h2>
+    
+    <div id="status" class="status"></div>
+    
+    <button onclick="simulateLogin()">Simulate Login</button>
+    <button onclick="checkLoginState()">Check Login State</button>
+    <button onclick="clearData()">Clear All Data</button>
+    <button onclick="goToPortfolio()">Go to Portfolio</button>
+    
+    <h3>LocalStorage Data:</h3>
+    <div id="localStorage"></div>
+    
+    <script>
+        function updateStatus() {
+            const userLoggedIn = localStorage.getItem('userLoggedIn');
+            const userEmail = localStorage.getItem('userEmail');
+            const userName = localStorage.getItem('userName');
+            
+            const statusDiv = document.getElementById('status');
+            
+            if (userLoggedIn === 'true') {
+                statusDiv.className = 'status logged-in';
+                statusDiv.innerHTML = `
+                    <strong>✅ User is LOGGED IN</strong><br>
+                    Name: ${userName || 'Not set'}<br>
+                    Email: ${userEmail || 'Not set'}
+                `;
+            } else {
+                statusDiv.className = 'status logged-out';
+                statusDiv.innerHTML = '<strong>❌ User is NOT logged in</strong>';
+            }
+            
+            // Show localStorage data
+            const localStorageDiv = document.getElementById('localStorage');
+            const relevantKeys = ['userLoggedIn', 'userEmail', 'userName', 'pendingUser', 'portfolioUsers'];
+            let output = '';
+            
+            relevantKeys.forEach(key => {
+                const value = localStorage.getItem(key);
+                output += `<strong>${key}:</strong> ${value || 'Not set'}<br>`;
+            });
+            
+            localStorageDiv.innerHTML = output;
+        }
+        
+        function simulateLogin() {
+            localStorage.setItem('userLoggedIn', 'true');
+            localStorage.setItem('userEmail', 'test@demo.com');
+            localStorage.setItem('userName', 'Test User');
+            
+            // Also create demo user data
+            const userData = {
+                firstName: 'Test',
+                lastName: 'User',
+                email: 'test@demo.com',
+                phone: '+8801234567890',
+                profession: 'Developer',
+                accountType: 'individual',
+                registrationDate: new Date().toISOString()
+            };
+            localStorage.setItem('pendingUser', JSON.stringify(userData));
+            
+            alert('✅ Login simulated successfully!');
+            updateStatus();
+        }
+        
+        function checkLoginState() {
+            updateStatus();
+        }
+        
+        function clearData() {
+            const keys = ['userLoggedIn', 'userEmail', 'userName', 'pendingUser', 'portfolioUsers'];
+            keys.forEach(key => localStorage.removeItem(key));
+            alert('🗑️ All data cleared!');
+            updateStatus();
+        }
+        
+        function goToPortfolio() {
+            window.location.href = 'index.html';
+        }
+        
+        // Auto update on load
+        window.onload = updateStatus;
+    </script>
+</body>
+</html>

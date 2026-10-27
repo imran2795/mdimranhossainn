@@ -1,0 +1,1962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>User Profile - Md. Imran Hossain</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="images/about-me.jpg">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    
+    <!-- Custom Styles -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, 
+                #667eea 0%, 
+                #764ba2 25%, 
+                #f093fb 50%, 
+                #4facfe 75%, 
+                #00c9ff 100%);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .bg-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: float 10s infinite linear;
+        }
+
+        .particle:nth-child(1) { width: 6px; height: 6px; left: 10%; animation-delay: 0s; }
+        .particle:nth-child(2) { width: 8px; height: 8px; left: 20%; animation-delay: 2s; }
+        .particle:nth-child(3) { width: 4px; height: 4px; left: 30%; animation-delay: 4s; }
+        .particle:nth-child(4) { width: 10px; height: 10px; left: 40%; animation-delay: 6s; }
+        .particle:nth-child(5) { width: 6px; height: 6px; left: 50%; animation-delay: 8s; }
+        .particle:nth-child(6) { width: 7px; height: 7px; left: 60%; animation-delay: 10s; }
+        .particle:nth-child(7) { width: 5px; height: 5px; left: 70%; animation-delay: 12s; }
+        .particle:nth-child(8) { width: 9px; height: 9px; left: 80%; animation-delay: 14s; }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-10vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Navigation */
+        .profile-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 15px 30px;
+            z-index: 1000;
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            color: #fff;
+            font-size: 18px;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            padding: 8px 20px;
+            color: #fff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            color: #fff;
+            text-decoration: none;
+        }
+
+        /* Main Container */
+        .profile-container {
+            position: relative;
+            z-index: 10;
+            padding: 100px 20px 50px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Profile Header */
+        .profile-header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            padding: 40px;
+            margin-bottom: 30px;
+            text-align: center;
+            animation: slideInDown 0.8s ease-out;
+        }
+
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            margin: 0 auto 20px;
+            display: block;
+            object-fit: cover;
+            animation: profileGlow 3s infinite alternate;
+            position: relative;
+        }
+
+        @keyframes profileGlow {
+            from {
+                box-shadow: 0 0 30px rgba(102, 126, 234, 0.6);
+            }
+            to {
+                box-shadow: 0 0 50px rgba(118, 75, 162, 0.8);
+            }
+        }
+
+        .profile-name {
+            color: #fff;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .profile-email {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .profile-badges {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .badge-item {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.8), rgba(118, 75, 162, 0.8));
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Profile Content */
+        .profile-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .profile-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 30px;
+            animation: slideInUp 0.8s ease-out;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            color: #fff;
+            font-size: 20px;
+            font-weight: 600;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .edit-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            border-radius: 20px;
+            padding: 8px 16px;
+            color: #fff;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-left: auto;
+        }
+
+        .edit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .info-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .info-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .info-label {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .info-value {
+            color: #fff;
+            font-size: 16px;
+            font-weight: 500;
+            word-break: break-all;
+        }
+
+        /* Activity Section */
+        .activity-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            flex-shrink: 0;
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-title {
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .activity-time {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 12px;
+        }
+
+        /* Full Width Sections */
+        .full-width-section {
+            grid-column: 1 / -1;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .stat-number {
+            color: #667eea;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* Edit Modal */
+        .edit-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            padding: 40px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            animation: modalSlideIn 0.4s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .modal-title {
+            color: #fff;
+            font-size: 24px;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .close-btn {
+            background: rgba(255, 107, 107, 0.2);
+            border: 1px solid rgba(255, 107, 107, 0.3);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ff6b6b;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            background: rgba(255, 107, 107, 0.3);
+            transform: scale(1.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .form-control {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 15px 20px;
+            color: #fff;
+            font-size: 16px;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: #667eea;
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
+            outline: none;
+        }
+
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Skills Section */
+        .skills-container {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+        }
+
+        .skill-item {
+            margin-bottom: 20px;
+        }
+
+        .skill-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .skill-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .skill-name {
+            color: #fff;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .skill-level {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 12px;
+            background: rgba(102, 126, 234, 0.2);
+            padding: 4px 12px;
+            border-radius: 15px;
+            border: 1px solid rgba(102, 126, 234, 0.3);
+        }
+
+        .skill-bar {
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .skill-progress {
+            height: 100%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 10px;
+            transition: width 0.8s ease;
+            animation: skillGlow 2s infinite alternate;
+        }
+
+        @keyframes skillGlow {
+            from {
+                box-shadow: 0 0 5px rgba(102, 126, 234, 0.5);
+            }
+            to {
+                box-shadow: 0 0 15px rgba(118, 75, 162, 0.8);
+            }
+        }
+
+        /* Social Links */
+        .social-links-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .social-link-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .social-link-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .social-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: #fff;
+            flex-shrink: 0;
+        }
+
+        .social-icon.linkedin {
+            background: linear-gradient(135deg, #0077b5, #00a0dc);
+        }
+
+        .social-icon.github {
+            background: linear-gradient(135deg, #333, #24292e);
+        }
+
+        .social-icon.portfolio {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .social-icon.twitter {
+            background: linear-gradient(135deg, #1da1f2, #1991db);
+        }
+
+        .social-info {
+            flex: 1;
+        }
+
+        .social-name {
+            color: #fff;
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .social-url {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 12px;
+            word-break: break-all;
+        }
+
+        /* Bio Section */
+        .bio-content {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+        }
+
+        .bio-text {
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.6;
+            font-size: 15px;
+            margin-bottom: 20px;
+            min-height: 80px;
+        }
+
+        .bio-stats {
+            display: flex;
+            gap: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .bio-stat {
+            text-align: center;
+        }
+
+        .bio-stat .stat-number {
+            color: #667eea;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .bio-stat .stat-label {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        /* Responsive Updates */
+        @media (max-width: 768px) {
+            .social-links-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .bio-stats {
+                justify-content: center;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Background Particles -->
+    <div class="bg-particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="profile-nav">
+        <div class="nav-content">
+            <a href="index.html" class="nav-brand">
+                <i class="fas fa-arrow-left" style="margin-right: 10px;"></i>
+                Back to Portfolio
+            </a>
+            <div class="nav-actions">
+                <a href="#" class="nav-btn" onclick="changePassword()">
+                    <i class="fas fa-key" style="margin-right: 8px;"></i>
+                    Change Password
+                </a>
+                <a href="#" class="nav-btn" onclick="userLogout()">
+                    <i class="fas fa-sign-out-alt" style="margin-right: 8px;"></i>
+                    Logout
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Profile Container -->
+    <div class="profile-container">
+        <!-- Profile Header -->
+        <div class="profile-header">
+            <img src="images/about-me.jpg" alt="Profile Avatar" class="profile-avatar" id="profileAvatar">
+            <h1 class="profile-name" id="profileName">Loading...</h1>
+            <p class="profile-email" id="profileEmail">Loading...</p>
+            <div class="profile-badges" id="profileBadges">
+                <span class="badge-item">Verified</span>
+                <span class="badge-item">Active</span>
+            </div>
+        </div>
+
+        <!-- Profile Content -->
+        <div class="profile-content">
+            <!-- Personal Information -->
+            <div class="profile-section">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-user"></i>
+                        Personal Information
+                    </h2>
+                    <button class="edit-btn" onclick="editPersonalInfo()">
+                        <i class="fas fa-edit"></i> Edit
+                    </button>
+                </div>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">First Name</div>
+                        <div class="info-value" id="firstName">Loading...</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Last Name</div>
+                        <div class="info-value" id="lastName">Loading...</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Phone Number</div>
+                        <div class="info-value" id="phoneNumber">Loading...</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Gender</div>
+                        <div class="info-value" id="gender">Loading...</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Date of Birth</div>
+                        <div class="info-value" id="dateOfBirth">Loading...</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Age</div>
+                        <div class="info-value" id="age">Loading...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Professional Information -->
+            <div class="profile-section">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-briefcase"></i>
+                        Professional Details
+                    </h2>
+                    <button class="edit-btn" onclick="editProfessionalInfo()">
+                        <i class="fas fa-edit"></i> Edit
+                    </button>
+                </div>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">Account Type</div>
+                        <div class="info-value" id="accountType">Loading...</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Profession</div>
+                        <div class="info-value" id="profession">Loading...</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Company</div>
+                        <div class="info-value" id="company">Loading...</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Interests</div>
+                        <div class="info-value" id="interests">Loading...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Personal Preferences -->
+            <div class="profile-section">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-palette"></i>
+                        Personal Preferences
+                    </h2>
+                    <button class="edit-btn" onclick="editPreferences()">
+                        <i class="fas fa-edit"></i> Edit
+                    </button>
+                </div>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">Theme Preference</div>
+                        <div class="info-value" id="themePreference">Dark Mode</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Language</div>
+                        <div class="info-value" id="language">English</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Time Zone</div>
+                        <div class="info-value" id="timeZone">Asia/Dhaka</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Notifications</div>
+                        <div class="info-value" id="notifications">Enabled</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Skills & Expertise -->
+            <div class="profile-section full-width-section">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-star"></i>
+                        Skills & Expertise
+                    </h2>
+                    <button class="edit-btn" onclick="editSkills()">
+                        <i class="fas fa-edit"></i> Edit
+                    </button>
+                </div>
+                <div class="skills-container" id="skillsContainer">
+                    <div class="skill-item">
+                        <div class="skill-info">
+                            <span class="skill-name">Web Development</span>
+                            <span class="skill-level">Advanced</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 90%;"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-info">
+                            <span class="skill-name">JavaScript</span>
+                            <span class="skill-level">Expert</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 95%;"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-info">
+                            <span class="skill-name">UI/UX Design</span>
+                            <span class="skill-level">Intermediate</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 70%;"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-info">
+                            <span class="skill-name">Project Management</span>
+                            <span class="skill-level">Advanced</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 85%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Social Media & Links -->
+            <div class="profile-section">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-share-alt"></i>
+                        Social Media & Links
+                    </h2>
+                    <button class="edit-btn" onclick="editSocialLinks()">
+                        <i class="fas fa-edit"></i> Edit
+                    </button>
+                </div>
+                <div class="social-links-grid" id="socialLinksGrid">
+                    <div class="social-link-item">
+                        <div class="social-icon linkedin">
+                            <i class="fab fa-linkedin-in"></i>
+                        </div>
+                        <div class="social-info">
+                            <div class="social-name">LinkedIn</div>
+                            <div class="social-url" id="linkedinUrl">Not connected</div>
+                        </div>
+                    </div>
+                    <div class="social-link-item">
+                        <div class="social-icon github">
+                            <i class="fab fa-github"></i>
+                        </div>
+                        <div class="social-info">
+                            <div class="social-name">GitHub</div>
+                            <div class="social-url" id="githubUrl">Not connected</div>
+                        </div>
+                    </div>
+                    <div class="social-link-item">
+                        <div class="social-icon portfolio">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                        <div class="social-info">
+                            <div class="social-name">Portfolio</div>
+                            <div class="social-url" id="portfolioUrl">mdimranhossainn.me</div>
+                        </div>
+                    </div>
+                    <div class="social-link-item">
+                        <div class="social-icon twitter">
+                            <i class="fab fa-twitter"></i>
+                        </div>
+                        <div class="social-info">
+                            <div class="social-name">Twitter</div>
+                            <div class="social-url" id="twitterUrl">Not connected</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Personal Bio & About -->
+            <div class="profile-section">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-user-edit"></i>
+                        Personal Bio
+                    </h2>
+                    <button class="edit-btn" onclick="editBio()">
+                        <i class="fas fa-edit"></i> Edit
+                    </button>
+                </div>
+                <div class="bio-content">
+                    <div class="bio-text" id="bioText">
+                        Write something about yourself, your goals, and what makes you unique. This is your space to express your personality and professional aspirations.
+                    </div>
+                    <div class="bio-stats">
+                        <div class="bio-stat">
+                            <div class="stat-number" id="bioWordCount">24</div>
+                            <div class="stat-label">Words</div>
+                        </div>
+                        <div class="bio-stat">
+                            <div class="stat-number" id="bioCharCount">156</div>
+                            <div class="stat-label">Characters</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="profile-section full-width-section">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-history"></i>
+                        Recent Activity
+                    </h2>
+                </div>
+                <div id="recentActivity">
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-sign-in-alt"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-title">Logged in successfully</div>
+                            <div class="activity-time">Just now</div>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-user-plus"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-title">Account created</div>
+                            <div class="activity-time" id="registrationTime">Loading...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Personal Info Modal -->
+    <div class="edit-modal" id="personalInfoModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Edit Personal Information</h3>
+                <button class="close-btn" onclick="closeModal('personalInfoModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="personalInfoForm">
+                <div class="form-group">
+                    <label class="form-label">First Name</label>
+                    <input type="text" class="form-control" id="editFirstName" placeholder="Enter first name">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Last Name</label>
+                    <input type="text" class="form-control" id="editLastName" placeholder="Enter last name">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Phone Number</label>
+                    <input type="tel" class="form-control" id="editPhone" placeholder="+880XXXXXXXXX">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Gender</label>
+                    <select class="form-control" id="editGender">
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option>
+                        <option value="prefer-not-to-say">Prefer not to say</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Date of Birth</label>
+                    <input type="date" class="form-control" id="editDateOfBirth">
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('personalInfoModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Professional Info Modal -->
+    <div class="edit-modal" id="professionalInfoModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Edit Professional Information</h3>
+                <button class="close-btn" onclick="closeModal('professionalInfoModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="professionalInfoForm">
+                <div class="form-group">
+                    <label class="form-label">Account Type</label>
+                    <select class="form-control" id="editAccountType">
+                        <option value="personal">Personal Account</option>
+                        <option value="business">Business Account</option>
+                        <option value="developer">Developer Account</option>
+                        <option value="student">Student Account</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Profession</label>
+                    <input type="text" class="form-control" id="editProfession" placeholder="Enter your profession">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Company/Organization</label>
+                    <input type="text" class="form-control" id="editCompany" placeholder="Enter company name">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Primary Interest</label>
+                    <select class="form-control" id="editInterests">
+                        <option value="web-development">Web Development</option>
+                        <option value="mobile-development">Mobile Development</option>
+                        <option value="data-science">Data Science</option>
+                        <option value="ui-ux-design">UI/UX Design</option>
+                        <option value="digital-marketing">Digital Marketing</option>
+                        <option value="business">Business</option>
+                        <option value="education">Education</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('professionalInfoModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Preferences Modal -->
+    <div class="edit-modal" id="preferencesModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Edit Personal Preferences</h3>
+                <button class="close-btn" onclick="closeModal('preferencesModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="preferencesForm">
+                <div class="form-group">
+                    <label class="form-label">Theme Preference</label>
+                    <select class="form-control" id="editTheme">
+                        <option value="dark">Dark Mode</option>
+                        <option value="light">Light Mode</option>
+                        <option value="auto">Auto (System)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Language</label>
+                    <select class="form-control" id="editLanguage">
+                        <option value="en">English</option>
+                        <option value="bn">বাংলা (Bengali)</option>
+                        <option value="hi">हिन्दी (Hindi)</option>
+                        <option value="ur">اردو (Urdu)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Time Zone</label>
+                    <select class="form-control" id="editTimeZone">
+                        <option value="Asia/Dhaka">Asia/Dhaka (GMT+6)</option>
+                        <option value="Asia/Kolkata">Asia/Kolkata (GMT+5:30)</option>
+                        <option value="Europe/London">Europe/London (GMT+0)</option>
+                        <option value="America/New_York">America/New_York (GMT-5)</option>
+                        <option value="Asia/Tokyo">Asia/Tokyo (GMT+9)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Notifications</label>
+                    <select class="form-control" id="editNotifications">
+                        <option value="enabled">Enabled</option>
+                        <option value="disabled">Disabled</option>
+                        <option value="important-only">Important Only</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('preferencesModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Skills Modal -->
+    <div class="edit-modal" id="skillsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Edit Skills & Expertise</h3>
+                <button class="close-btn" onclick="closeModal('skillsModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="skillsForm">
+                <div id="skillsEditContainer">
+                    <div class="skill-edit-item">
+                        <div class="form-group">
+                            <label class="form-label">Skill Name</label>
+                            <input type="text" class="form-control skill-name-input" placeholder="e.g., JavaScript">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Proficiency Level (%)</label>
+                            <input type="range" class="form-control skill-range" min="0" max="100" value="50">
+                            <span class="range-value">50%</span>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-secondary" onclick="addSkillField()" style="margin-bottom: 20px;">
+                    <i class="fas fa-plus"></i> Add Another Skill
+                </button>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('skillsModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Social Links Modal -->
+    <div class="edit-modal" id="socialLinksModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Edit Social Media & Links</h3>
+                <button class="close-btn" onclick="closeModal('socialLinksModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="socialLinksForm">
+                <div class="form-group">
+                    <label class="form-label">LinkedIn Profile</label>
+                    <input type="url" class="form-control" id="editLinkedin" placeholder="https://linkedin.com/in/username">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">GitHub Profile</label>
+                    <input type="url" class="form-control" id="editGithub" placeholder="https://github.com/username">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Portfolio Website</label>
+                    <input type="url" class="form-control" id="editPortfolio" placeholder="https://yourwebsite.com">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Twitter Profile</label>
+                    <input type="url" class="form-control" id="editTwitter" placeholder="https://twitter.com/username">
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('socialLinksModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Bio Modal -->
+    <div class="edit-modal" id="bioModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Edit Personal Bio</h3>
+                <button class="close-btn" onclick="closeModal('bioModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="bioForm">
+                <div class="form-group">
+                    <label class="form-label">About Yourself</label>
+                    <textarea class="form-control" id="editBio" rows="8" placeholder="Write something about yourself, your goals, and what makes you unique..." style="resize: vertical; min-height: 200px;"></textarea>
+                    <div style="display: flex; justify-content: space-between; margin-top: 10px; font-size: 12px; color: rgba(255, 255, 255, 0.6);">
+                        <span id="bioCharCounter">0 characters</span>
+                        <span>Max 1000 characters</span>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('bioModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    
+    <script>
+        // Load user data on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            checkUserAccess();
+            loadUserData();
+            updateStatistics();
+        });
+
+        // Check if user is logged in
+        function checkUserAccess() {
+            const userLoggedIn = localStorage.getItem('userLoggedIn');
+            if (userLoggedIn !== 'true') {
+                window.location.href = 'login.html';
+                return;
+            }
+        }
+
+        // Load user data from localStorage
+        function loadUserData() {
+            const userData = JSON.parse(localStorage.getItem('pendingUser') || '{}');
+            const userEmail = localStorage.getItem('userEmail');
+            const userName = localStorage.getItem('userName');
+            
+            // Load basic info
+            document.getElementById('profileName').textContent = userName || `${userData.firstName || 'User'} ${userData.lastName || ''}`;
+            document.getElementById('profileEmail').textContent = userEmail || userData.email || 'user@example.com';
+            
+            // Load personal information (updated for new structure)
+            document.getElementById('fullName').textContent = `${userData.firstName || ''} ${userData.lastName || ''}`.trim() || 'Not provided';
+            document.getElementById('email').textContent = userEmail || userData.email || 'Not provided';
+            document.getElementById('phone').textContent = userData.phone || 'Not provided';
+            document.getElementById('location').textContent = userData.location || 'Not provided';
+            
+            // For compatibility with old structure
+            if (document.getElementById('firstName')) {
+                document.getElementById('firstName').textContent = userData.firstName || 'Not provided';
+            }
+            if (document.getElementById('lastName')) {
+                document.getElementById('lastName').textContent = userData.lastName || 'Not provided';
+            }
+            if (document.getElementById('phoneNumber')) {
+                document.getElementById('phoneNumber').textContent = userData.phone || 'Not provided';
+            }
+            if (document.getElementById('gender')) {
+                document.getElementById('gender').textContent = formatGender(userData.gender) || 'Not provided';
+            }
+            
+            // Date of birth and age
+            if (userData.dateOfBirth) {
+                document.getElementById('dateOfBirth').textContent = formatDate(userData.dateOfBirth);
+                const age = calculateAge(userData.dateOfBirth);
+                document.getElementById('age').textContent = age + ' years old';
+            } else {
+                document.getElementById('dateOfBirth').textContent = 'Not provided';
+                document.getElementById('age').textContent = 'Not provided';
+            }
+            
+            // Load professional information
+            document.getElementById('accountType').textContent = formatAccountType(userData.accountType) || 'Not provided';
+            document.getElementById('profession').textContent = userData.profession || 'Not provided';
+            document.getElementById('company').textContent = userData.company || 'Not provided';
+            document.getElementById('interests').textContent = formatInterests(userData.interests) || 'Not provided';
+            
+            // Update registration time
+            if (userData.registrationDate) {
+                const regTime = new Date(userData.registrationDate);
+                document.getElementById('registrationTime').textContent = formatRelativeTime(regTime);
+            }
+        }
+
+        // Update statistics
+        function updateStatistics() {
+            // Load preferences and update display
+            loadPreferences();
+            loadSkills();
+            loadSocialLinks();
+            loadBio();
+        }
+
+        // Load Preferences
+        function loadPreferences() {
+            const preferences = JSON.parse(localStorage.getItem('userPreferences') || '{}');
+            
+            document.getElementById('themePreference').textContent = formatTheme(preferences.theme) || 'Dark Mode';
+            document.getElementById('language').textContent = formatLanguage(preferences.language) || 'English';
+            document.getElementById('timeZone').textContent = preferences.timeZone || 'Asia/Dhaka';
+            document.getElementById('notifications').textContent = formatNotifications(preferences.notifications) || 'Enabled';
+        }
+
+        // Load Skills
+        function loadSkills() {
+            const skills = JSON.parse(localStorage.getItem('userSkills') || '[]');
+            const container = document.getElementById('skillsContainer');
+            
+            if (skills.length === 0) {
+                // Default skills
+                return;
+            }
+            
+            container.innerHTML = '';
+            skills.forEach(skill => {
+                const skillElement = document.createElement('div');
+                skillElement.className = 'skill-item';
+                skillElement.innerHTML = `
+                    <div class="skill-info">
+                        <span class="skill-name">${skill.name}</span>
+                        <span class="skill-level">${getSkillLevel(skill.level)}</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-progress" style="width: ${skill.level}%;"></div>
+                    </div>
+                `;
+                container.appendChild(skillElement);
+            });
+        }
+
+        // Load Social Links
+        function loadSocialLinks() {
+            const socialLinks = JSON.parse(localStorage.getItem('userSocialLinks') || '{}');
+            
+            document.getElementById('linkedinUrl').textContent = socialLinks.linkedin ? extractDomain(socialLinks.linkedin) : 'Not connected';
+            document.getElementById('githubUrl').textContent = socialLinks.github ? extractDomain(socialLinks.github) : 'Not connected';
+            document.getElementById('portfolioUrl').textContent = socialLinks.portfolio ? extractDomain(socialLinks.portfolio) : 'mdimranhossainn.me';
+            document.getElementById('twitterUrl').textContent = socialLinks.twitter ? extractDomain(socialLinks.twitter) : 'Not connected';
+        }
+
+        // Load Bio
+        function loadBio() {
+            const bio = localStorage.getItem('userBio') || 'Write something about yourself, your goals, and what makes you unique. This is your space to express your personality and professional aspirations.';
+            document.getElementById('bioText').textContent = bio;
+            
+            // Update word and character count
+            const words = bio.trim().split(/\s+/).filter(word => word.length > 0).length;
+            const chars = bio.length;
+            
+            document.getElementById('bioWordCount').textContent = words;
+            document.getElementById('bioCharCount').textContent = chars;
+        }
+
+        // Edit Preferences
+        function editPreferences() {
+            const preferences = JSON.parse(localStorage.getItem('userPreferences') || '{}');
+            
+            document.getElementById('editTheme').value = preferences.theme || 'dark';
+            document.getElementById('editLanguage').value = preferences.language || 'en';
+            document.getElementById('editTimeZone').value = preferences.timeZone || 'Asia/Dhaka';
+            document.getElementById('editNotifications').value = preferences.notifications || 'enabled';
+            
+            document.getElementById('preferencesModal').style.display = 'flex';
+        }
+
+        // Edit Skills
+        function editSkills() {
+            const skills = JSON.parse(localStorage.getItem('userSkills') || '[]');
+            const container = document.getElementById('skillsEditContainer');
+            
+            container.innerHTML = '';
+            
+            if (skills.length === 0) {
+                // Add default skill fields
+                addSkillField();
+                addSkillField();
+                addSkillField();
+            } else {
+                skills.forEach(skill => {
+                    addSkillField(skill.name, skill.level);
+                });
+            }
+            
+            document.getElementById('skillsModal').style.display = 'flex';
+        }
+
+        // Edit Social Links
+        function editSocialLinks() {
+            const socialLinks = JSON.parse(localStorage.getItem('userSocialLinks') || '{}');
+            
+            document.getElementById('editLinkedin').value = socialLinks.linkedin || '';
+            document.getElementById('editGithub').value = socialLinks.github || '';
+            document.getElementById('editPortfolio').value = socialLinks.portfolio || '';
+            document.getElementById('editTwitter').value = socialLinks.twitter || '';
+            
+            document.getElementById('socialLinksModal').style.display = 'flex';
+        }
+
+        // Edit Bio
+        function editBio() {
+            const bio = localStorage.getItem('userBio') || '';
+            document.getElementById('editBio').value = bio;
+            
+            // Setup character counter
+            const textarea = document.getElementById('editBio');
+            const counter = document.getElementById('bioCharCounter');
+            
+            function updateCounter() {
+                const count = textarea.value.length;
+                counter.textContent = `${count} characters`;
+                if (count > 1000) {
+                    counter.style.color = '#ff6b6b';
+                    textarea.style.borderColor = '#ff6b6b';
+                } else {
+                    counter.style.color = 'rgba(255, 255, 255, 0.6)';
+                    textarea.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                }
+            }
+            
+            textarea.addEventListener('input', updateCounter);
+            updateCounter();
+            
+            document.getElementById('bioModal').style.display = 'flex';
+        }
+
+        // Add Skill Field
+        function addSkillField(name = '', level = 50) {
+            const container = document.getElementById('skillsEditContainer');
+            const skillDiv = document.createElement('div');
+            skillDiv.className = 'skill-edit-item';
+            skillDiv.style.cssText = 'margin-bottom: 25px; padding: 20px; background: rgba(255, 255, 255, 0.05); border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.1);';
+            
+            skillDiv.innerHTML = `
+                <div class="form-group">
+                    <label class="form-label">Skill Name</label>
+                    <input type="text" class="form-control skill-name-input" placeholder="e.g., JavaScript" value="${name}">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Proficiency Level (%)</label>
+                    <input type="range" class="form-control skill-range" min="0" max="100" value="${level}" style="margin-bottom: 10px;">
+                    <span class="range-value">${level}%</span>
+                </div>
+                <button type="button" onclick="this.parentElement.remove()" style="background: rgba(255, 107, 107, 0.2); border: 1px solid rgba(255, 107, 107, 0.3); color: #ff6b6b; padding: 8px 15px; border-radius: 20px; cursor: pointer;">
+                    <i class="fas fa-trash"></i> Remove
+                </button>
+            `;
+            
+            container.appendChild(skillDiv);
+            
+            // Add range slider listener
+            const range = skillDiv.querySelector('.skill-range');
+            const valueSpan = skillDiv.querySelector('.range-value');
+            range.addEventListener('input', () => {
+                valueSpan.textContent = range.value + '%';
+            });
+        }
+
+        // Edit Personal Info
+        function editPersonalInfo() {
+            const userData = JSON.parse(localStorage.getItem('pendingUser') || '{}');
+            
+            // Populate edit form
+            document.getElementById('editFirstName').value = userData.firstName || '';
+            document.getElementById('editLastName').value = userData.lastName || '';
+            document.getElementById('editPhone').value = userData.phone || '';
+            document.getElementById('editGender').value = userData.gender || '';
+            document.getElementById('editDateOfBirth').value = userData.dateOfBirth || '';
+            
+            // Show modal
+            document.getElementById('personalInfoModal').style.display = 'flex';
+        }
+
+        // Edit Professional Info
+        function editProfessionalInfo() {
+            const userData = JSON.parse(localStorage.getItem('pendingUser') || '{}');
+            
+            // Populate edit form
+            document.getElementById('editAccountType').value = userData.accountType || '';
+            document.getElementById('editProfession').value = userData.profession || '';
+            document.getElementById('editCompany').value = userData.company || '';
+            document.getElementById('editInterests').value = userData.interests || '';
+            
+            // Show modal
+            document.getElementById('professionalInfoModal').style.display = 'flex';
+        }
+
+        // Edit Personal Info
+        function editPersonalInfo() {
+            const userData = JSON.parse(localStorage.getItem('pendingUser') || '{}');
+            
+            // Populate form with current data
+            document.getElementById('editFirstName').value = userData.firstName || '';
+            document.getElementById('editLastName').value = userData.lastName || '';
+            document.getElementById('editPhone').value = userData.phone || '';
+            document.getElementById('editGender').value = userData.gender || '';
+            document.getElementById('editDateOfBirth').value = userData.dateOfBirth || '';
+            
+            // Show modal
+            document.getElementById('personalInfoModal').style.display = 'flex';
+        }
+
+        // Edit Professional Info
+        function editProfessionalInfo() {
+            const userData = JSON.parse(localStorage.getItem('pendingUser') || '{}');
+            
+            // Populate form with current data
+            document.getElementById('editAccountType').value = userData.accountType || 'individual';
+            document.getElementById('editProfession').value = userData.profession || '';
+            document.getElementById('editCompany').value = userData.company || '';
+            document.getElementById('editInterests').value = userData.interests || '';
+            
+            // Show modal
+            document.getElementById('professionalInfoModal').style.display = 'flex';
+        }
+
+        // Close Modal
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // Handle Personal Info Form Submission
+        document.getElementById('personalInfoForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const userData = JSON.parse(localStorage.getItem('pendingUser') || '{}');
+            
+            // Update userData with new values
+            userData.firstName = document.getElementById('editFirstName').value;
+            userData.lastName = document.getElementById('editLastName').value;
+            userData.phone = document.getElementById('editPhone').value;
+            userData.gender = document.getElementById('editGender').value;
+            userData.dateOfBirth = document.getElementById('editDateOfBirth').value;
+            
+            // Save updated data
+            localStorage.setItem('pendingUser', JSON.stringify(userData));
+            localStorage.setItem('userName', `${userData.firstName} ${userData.lastName}`);
+            
+            // Close modal and reload data
+            closeModal('personalInfoModal');
+            loadUserData();
+            
+            // Show success message
+            showSuccessMessage('Personal information updated successfully!');
+        });
+
+        // Handle Professional Info Form Submission
+        document.getElementById('professionalInfoForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const userData = JSON.parse(localStorage.getItem('pendingUser') || '{}');
+            
+            // Update userData with new values
+            userData.accountType = document.getElementById('editAccountType').value;
+            userData.profession = document.getElementById('editProfession').value;
+            userData.company = document.getElementById('editCompany').value;
+            userData.interests = document.getElementById('editInterests').value;
+            
+            // Save updated data
+            localStorage.setItem('pendingUser', JSON.stringify(userData));
+            
+            // Close modal and reload data
+            closeModal('professionalInfoModal');
+            loadUserData();
+            
+            // Show success message
+            showSuccessMessage('Professional information updated successfully!');
+        });
+
+        // Change Password
+        function changePassword() {
+            const currentPassword = prompt('Enter your current password:');
+            if (!currentPassword) return;
+            
+            const newPassword = prompt('Enter your new password:');
+            if (!newPassword) return;
+            
+            const confirmPassword = prompt('Confirm your new password:');
+            if (newPassword !== confirmPassword) {
+                showErrorMessage('Passwords do not match!');
+                return;
+            }
+            
+            if (newPassword.length < 8) {
+                showErrorMessage('Password must be at least 8 characters long!');
+                return;
+            }
+            
+            // Update password in userData
+            const userData = JSON.parse(localStorage.getItem('pendingUser') || '{}');
+            userData.password = newPassword;
+            localStorage.setItem('pendingUser', JSON.stringify(userData));
+            
+            showSuccessMessage('Password changed successfully!');
+        }
+
+        // Logout function
+        function userLogout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('userLoggedIn');
+                localStorage.removeItem('userEmail');
+                localStorage.removeItem('userName');
+                localStorage.removeItem('loginMethod');
+                
+                showSuccessMessage('Logged out successfully!', () => {
+                    window.location.href = 'index.html';
+                });
+            }
+        }
+
+        // Utility Functions
+        function formatGender(gender) {
+            const genderMap = {
+                'male': 'Male',
+                'female': 'Female',
+                'other': 'Other',
+                'prefer-not-to-say': 'Prefer not to say'
+            };
+            return genderMap[gender] || gender;
+        }
+
+        function formatAccountType(type) {
+            const typeMap = {
+                'personal': 'Personal Account',
+                'business': 'Business Account',
+                'developer': 'Developer Account',
+                'student': 'Student Account'
+            };
+            return typeMap[type] || type;
+        }
+
+        function formatInterests(interests) {
+            const interestMap = {
+                'web-development': 'Web Development',
+                'mobile-development': 'Mobile Development',
+                'data-science': 'Data Science',
+                'ui-ux-design': 'UI/UX Design',
+                'digital-marketing': 'Digital Marketing',
+                'business': 'Business',
+                'education': 'Education',
+                'other': 'Other'
+            };
+            return interestMap[interests] || interests;
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return '';
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+        }
+
+        function calculateAge(dateString) {
+            if (!dateString) return 0;
+            const birthDate = new Date(dateString);
+            const today = new Date();
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const monthDiff = today.getMonth() - birthDate.getMonth();
+            
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            
+            return age;
+        }
+
+        function formatRelativeTime(date) {
+            const now = new Date();
+            const diff = now - date;
+            const minutes = Math.floor(diff / (1000 * 60));
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            
+            if (minutes < 60) {
+                return `${minutes} minutes ago`;
+            } else if (hours < 24) {
+                return `${hours} hours ago`;
+            } else {
+                return `${days} days ago`;
+            }
+        }
+
+        // Save Preferences
+        function savePreferences() {
+            const preferences = {
+                theme: document.getElementById('editTheme').value,
+                language: document.getElementById('editLanguage').value,
+                timeZone: document.getElementById('editTimeZone').value,
+                notifications: document.getElementById('editNotifications').value
+            };
+            
+            localStorage.setItem('userPreferences', JSON.stringify(preferences));
+            loadPreferences();
+            closeModal('preferencesModal');
+            
+            showSuccessNotification('Preferences updated successfully!');
+        }
+
+        // Save Skills
+        function saveSkills() {
+            const skillItems = document.querySelectorAll('.skill-edit-item');
+            const skills = [];
+            
+            skillItems.forEach(item => {
+                const name = item.querySelector('.skill-name-input').value.trim();
+                const level = parseInt(item.querySelector('.skill-range').value);
+                
+                if (name) {
+                    skills.push({ name, level });
+                }
+            });
+            
+            localStorage.setItem('userSkills', JSON.stringify(skills));
+            loadSkills();
+            closeModal('skillsModal');
+            
+            showSuccessNotification('Skills updated successfully!');
+        }
+
+        // Save Social Links
+        function saveSocialLinks() {
+            const socialLinks = {
+                linkedin: document.getElementById('editLinkedin').value.trim(),
+                github: document.getElementById('editGithub').value.trim(),
+                portfolio: document.getElementById('editPortfolio').value.trim(),
+                twitter: document.getElementById('editTwitter').value.trim()
+            };
+            
+            localStorage.setItem('userSocialLinks', JSON.stringify(socialLinks));
+            loadSocialLinks();
+            closeModal('socialLinksModal');
+            
+            showSuccessNotification('Social links updated successfully!');
+        }
+
+        // Save Bio
+        function saveBio() {
+            const bio = document.getElementById('editBio').value.trim();
+            
+            if (bio.length > 1000) {
+                showNotification('Bio cannot exceed 1000 characters', 'error');
+                return;
+            }
+            
+            localStorage.setItem('userBio', bio);
+            loadBio();
+            closeModal('bioModal');
+            
+            showSuccessNotification('Bio updated successfully!');
+        }
+
+        // Helper Functions
+        function formatTheme(theme) {
+            const themes = {
+                'dark': 'Dark Mode',
+                'light': 'Light Mode',
+                'auto': 'Auto (System)',
+                'blue': 'Blue Theme',
+                'green': 'Green Theme'
+            };
+            return themes[theme] || theme;
+        }
+
+        function formatLanguage(lang) {
+            const languages = {
+                'en': 'English',
+                'bn': 'বাংলা',
+                'hi': 'हिन्दी',
+                'es': 'Español',
+                'fr': 'Français'
+            };
+            return languages[lang] || lang;
+        }
+
+        function formatNotifications(notif) {
+            const notifications = {
+                'enabled': 'Enabled',
+                'disabled': 'Disabled',
+                'important': 'Important Only',
+                'scheduled': 'Scheduled'
+            };
+            return notifications[notif] || notif;
+        }
+
+        function getSkillLevel(level) {
+            if (level >= 90) return 'Expert';
+            if (level >= 75) return 'Advanced';
+            if (level >= 50) return 'Intermediate';
+            if (level >= 25) return 'Beginner';
+            return 'Learning';
+        }
+
+        function extractDomain(url) {
+            try {
+                if (!url.startsWith('http')) {
+                    url = 'https://' + url;
+                }
+                return new URL(url).hostname.replace('www.', '');
+            } catch {
+                return url;
+            }
+        }
+
+        function showSuccessNotification(message) {
+            showNotification(message, 'success');
+        }
+
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 25px;
+                background: ${type === 'success' ? 'rgba(46, 204, 113, 0.9)' : type === 'error' ? 'rgba(231, 76, 60, 0.9)' : 'rgba(52, 152, 219, 0.9)'};
+                color: white;
+                border-radius: 10px;
+                backdrop-filter: blur(10px);
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+                z-index: 10001;
+                transform: translateX(100%);
+                transition: all 0.3s ease;
+            `;
+            notification.innerHTML = `
+                <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-triangle' : 'fa-info-circle'}"></i>
+                <span style="margin-left: 10px;">${message}</span>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.transform = 'translateX(0)';
+            }, 100);
+            
+            setTimeout(() => {
+                notification.style.transform = 'translateX(100%)';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // Message functions
+        function showSuccessMessage(message, callback) {
+            const modal = createMessageModal(message, 'success', callback);
+            document.body.appendChild(modal);
+        }
+
+        function showErrorMessage(message) {
+            const modal = createMessageModal(message, 'error');
+            document.body.appendChild(modal);
+        }
+
+        function createMessageModal(message, type, callback) {
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: rgba(0, 0, 0, 0.9);
+                backdrop-filter: blur(20px);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                border-radius: 20px;
+                padding: 30px;
+                z-index: 10000;
+                text-align: center;
+                color: white;
+                min-width: 300px;
+                animation: modalSlideIn 0.3s ease-out;
+            `;
+            
+            const iconClass = type === 'success' ? 'fas fa-check-circle' : 'fas fa-exclamation-circle';
+            const iconColor = type === 'success' ? '#6bcf7f' : '#ff6b6b';
+            
+            modal.innerHTML = `
+                <i class="${iconClass}" style="font-size: 3rem; color: ${iconColor}; margin-bottom: 15px;"></i>
+                <p style="margin: 0; font-size: 16px;">${message}</p>
+            `;
+            
+            setTimeout(() => {
+                if (modal && modal.parentNode) {
+                    modal.remove();
+                }
+                if (callback) callback();
+            }, 2000);
+            
+            return modal;
+        }
+
+        // Close modal when clicking outside
+        window.addEventListener('click', function(e) {
+            const modals = document.querySelectorAll('.edit-modal');
+            modals.forEach(modal => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

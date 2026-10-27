@@ -1,0 +1,289 @@
+/* Perfect Typing Animation Container */
+.ultra-typing-container {
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  font-weight: 600;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 25px 0;
+  position: relative;
+  z-index: 10;
+  font-family: 'Poppins', sans-serif;
+  animation: perfectTypingFloat 8s ease-in-out infinite;
+}
+
+.typing-prefix {
+  background: linear-gradient(45deg, #64ffda, #4ecdc4);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: perfectPrefixGlow 4s ease-in-out infinite;
+  position: relative;
+}
+
+.typing-prefix::before {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, #ff6b6b, #feca57);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  opacity: 0;
+  animation: perfectPrefixEcho 6s ease-in-out infinite;
+  z-index: -1;
+}
+
+@keyframes perfectTypingFloat {
+  0%, 100% { transform: translateY(0px) rotateX(0deg); }
+  50% { transform: translateY(-4px) rotateX(2deg); }
+}
+
+@keyframes perfectPrefixGlow {
+  0%, 100% { filter: brightness(1) hue-rotate(0deg); }
+  50% { filter: brightness(1.3) hue-rotate(180deg); }
+}
+
+@keyframes perfectPrefixEcho {
+  0%, 80% { opacity: 0; transform: scale(1); }
+  90% { opacity: 0.4; transform: scale(1.05); }
+  100% { opacity: 0; transform: scale(1); }
+}
+
+.typing-cursor {
+  width: 3px;
+  height: 1.8em;
+  background: linear-gradient(180deg, #64ffda 0%, #ff6b6b 100%);
+  animation: 
+    perfectCursorBlink 1.5s ease-in-out infinite,
+    perfectCursorGlow 3s ease-in-out infinite;
+  border-radius: 2px;
+  position: relative;
+}
+
+.typing-cursor::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(180deg, #64ffda 0%, #ff6b6b 100%);
+  border-radius: 4px;
+  opacity: 0.5;
+  filter: blur(4px);
+  z-index: -1;
+  animation: perfectCursorHalo 2s ease-in-out infinite;
+}
+
+@keyframes perfectCursorBlink {
+  0%, 50% { opacity: 1; transform: scaleY(1); }
+  51%, 100% { opacity: 0.3; transform: scaleY(0.8); }
+}
+
+@keyframes perfectCursorGlow {
+  0%, 100% { filter: brightness(1) hue-rotate(0deg); }
+  50% { filter: brightness(1.5) hue-rotate(180deg); }
+}
+
+@keyframes perfectCursorHalo {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.2); }
+}
+
+/* Perfect Subtitle Styling */
+.ultra-subtitle {
+  font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 20px 0 30px 0;
+  line-height: 1.6;
+  text-align: center;
+  max-width: 600px;
+  position: relative;
+  z-index: 10;
+  font-family: 'Poppins', sans-serif;
+  animation: perfectSubtitleFloat 8s ease-in-out infinite;
+}
+
+.ultra-subtitle::before {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: -10px;
+  right: -10px;
+  bottom: -5px;
+  background: linear-gradient(45deg, 
+    rgba(100, 255, 218, 0.1) 0%, 
+    rgba(255, 107, 107, 0.1) 50%, 
+    rgba(78, 205, 196, 0.1) 100%);
+  border-radius: 12px;
+  opacity: 0;
+  animation: perfectSubtitleGlow 6s ease-in-out infinite;
+  z-index: -1;
+}
+
+.ultra-subtitle::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #64ffda 0%, #ff6b6b 100%);
+  animation: perfectSubtitleUnderline 8s ease-in-out infinite;
+  transform: translateY(-50%);
+}
+
+@keyframes perfectSubtitleFloat {
+  0%, 100% { transform: translateY(0px) rotateX(0deg); }
+  50% { transform: translateY(-5px) rotateX(2deg); }
+}
+
+@keyframes perfectSubtitleGlow {
+  0%, 100% { opacity: 0; transform: scale(1); }
+  50% { opacity: 0.3; transform: scale(1.05); }
+}
+
+@keyframes perfectSubtitleUnderline {
+  0%, 30% { width: 0; opacity: 0; }
+  60% { width: 100%; opacity: 1; }
+  100% { width: 100%; opacity: 0; }
+}
+
+/* Perfect Experience Badge */
+.ultra-experience-badge {
+  background: linear-gradient(135deg, 
+    rgba(100, 255, 218, 0.2) 0%, 
+    rgba(255, 107, 107, 0.2) 50%, 
+    rgba(78, 205, 196, 0.2) 100%);
+  backdrop-filter: blur(20px);
+  border: 2px solid transparent;
+  border-image: linear-gradient(45deg, #64ffda, #ff6b6b, #4ecdc4) 1;
+  padding: 12px 20px;
+  border-radius: 50px;
+  margin: 20px 0;
+  position: relative;
+  overflow: hidden;
+  animation: 
+    perfectBadgeFloat 6s ease-in-out infinite,
+    perfectBadgeGlow 8s ease-in-out infinite;
+  z-index: 10;
+}
+
+.ultra-experience-badge::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, 
+    transparent 0%, 
+    rgba(255, 255, 255, 0.1) 50%, 
+    transparent 100%);
+  animation: perfectBadgeShine 10s linear infinite;
+  pointer-events: none;
+}
+
+.ultra-experience-badge::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50px;
+  animation: perfectBadgeBorder 4s ease-in-out infinite;
+}
+
+@keyframes perfectBadgeFloat {
+  0%, 100% { transform: translateY(0px) rotateZ(0deg); }
+  50% { transform: translateY(-8px) rotateZ(1deg); }
+}
+
+@keyframes perfectBadgeGlow {
+  0%, 100% { 
+    box-shadow: 
+      0 0 20px rgba(100, 255, 218, 0.3),
+      0 0 40px rgba(100, 255, 218, 0.2),
+      inset 0 0 20px rgba(255, 255, 255, 0.1);
+  }
+  33% { 
+    box-shadow: 
+      0 0 25px rgba(255, 107, 107, 0.4),
+      0 0 50px rgba(255, 107, 107, 0.3),
+      inset 0 0 25px rgba(255, 255, 255, 0.15);
+  }
+  66% { 
+    box-shadow: 
+      0 0 30px rgba(78, 205, 196, 0.4),
+      0 0 60px rgba(78, 205, 196, 0.3),
+      inset 0 0 30px rgba(255, 255, 255, 0.2);
+  }
+}
+
+@keyframes perfectBadgeShine {
+  0% { transform: rotate(0deg) translate(-50%, -50%); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: rotate(360deg) translate(-50%, -50%); opacity: 0; }
+}
+
+@keyframes perfectBadgeBorder {
+  0%, 100% { border-color: rgba(100, 255, 218, 0.5); }
+  33% { border-color: rgba(255, 107, 107, 0.5); }
+  66% { border-color: rgba(78, 205, 196, 0.5); }
+}
+
+.badge-text {
+  font-weight: 600;
+  font-size: 14px;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+  position: relative;
+  z-index: 2;
+  font-family: 'Poppins', sans-serif;
+  animation: perfectBadgeTextGlow 5s ease-in-out infinite;
+}
+
+.badge-highlight {
+  color: #64ffda;
+  font-weight: 800;
+  animation: perfectHighlightPulse 4s ease-in-out infinite;
+  position: relative;
+}
+
+.badge-highlight::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle, rgba(100, 255, 218, 0.3) 0%, transparent 70%);
+  animation: perfectHighlightHalo 3s ease-in-out infinite;
+  z-index: -1;
+}
+
+@keyframes perfectBadgeTextGlow {
+  0%, 100% { filter: brightness(1) hue-rotate(0deg); }
+  50% { filter: brightness(1.2) hue-rotate(180deg); }
+}
+
+@keyframes perfectHighlightPulse {
+  0%, 100% { color: #64ffda; filter: brightness(1); }
+  33% { color: #ff6b6b; filter: brightness(1.3); }
+  66% { color: #4ecdc4; filter: brightness(1.2); }
+}
+
+@keyframes perfectHighlightHalo {
+  0%, 100% { opacity: 0; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.2); }
+}

@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Login - Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .login-header {
+            margin-bottom: 30px;
+        }
+
+        .login-header h1 {
+            color: #333;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .login-header p {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .login-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .forgot-password {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .forgot-password:hover {
+            color: #764ba2;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+            color: #999;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #e0e0e0;
+        }
+
+        .divider span {
+            padding: 0 15px;
+        }
+
+        .register-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .register-link:hover {
+            color: #764ba2;
+        }
+
+        .guest-option {
+            margin-top: 15px;
+            padding: 12px;
+            background: rgba(255, 193, 7, 0.1);
+            border: 1px solid rgba(255, 193, 7, 0.3);
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .guest-btn {
+            background: linear-gradient(135deg, #ffc107, #ff8f00);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .guest-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 15px rgba(255, 193, 7, 0.4);
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-weight: 600;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+
+        .alert.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .alert-success {
+            background: rgba(34, 197, 94, 0.1);
+            color: #059669;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+
+        .alert-error {
+            background: rgba(239, 68, 68, 0.1);
+            color: #dc2626;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .social-login {
+            margin-top: 20px;
+        }
+
+        .social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            background: white;
+            color: #666;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-bottom: 10px;
+        }
+
+        .social-btn:hover {
+            border-color: #667eea;
+            background: #f8f9fa;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <h1><i class="fas fa-user-circle"></i> User Login</h1>
+            <p>Welcome back! Please sign in to your account</p>
+        </div>
+
+        <div id="alertContainer"></div>
+
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" placeholder="Enter your email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Enter your password" required>
+            </div>
+
+            <div class="login-options">
+                <div class="remember-me">
+                    <input type="checkbox" id="rememberMe">
+                    <label for="rememberMe">Remember me</label>
+                </div>
+                <a href="#" class="forgot-password">Forgot Password?</a>
+            </div>
+
+            <button type="submit" class="login-btn">
+                <i class="fas fa-sign-in-alt"></i> Sign In
+            </button>
+        </form>
+
+        <div class="guest-option">
+            <p style="margin-bottom: 10px; color: #666; font-size: 14px;">
+                Don't want to create an account?
+            </p>
+            <button class="guest-btn" onclick="continueAsGuest()">
+                <i class="fas fa-user"></i> Continue as Guest
+            </button>
+        </div>
+
+        <div class="divider">
+            <span>Don't have an account?</span>
+        </div>
+
+        <a href="register.html" class="register-link">
+            <i class="fas fa-user-plus"></i> Create New Account
+        </a>
+
+        <div class="social-login">
+            <a href="#" class="social-btn">
+                <i class="fab fa-google" style="color: #4285f4;"></i>
+                Continue with Google
+            </a>
+            <a href="#" class="social-btn">
+                <i class="fab fa-facebook" style="color: #1877f2;"></i>
+                Continue with Facebook
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Show alert function
+        function showAlert(message, type) {
+            const alertContainer = document.getElementById('alertContainer');
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type}`;
+            alert.innerHTML = `<i class="fas fa-${type === 'success' ? 'check' : 'exclamation-triangle'}"></i> ${message}`;
+            
+            alertContainer.appendChild(alert);
+            setTimeout(() => alert.classList.add('show'), 100);
+            
+            setTimeout(() => {
+                alert.classList.remove('show');
+                setTimeout(() => alertContainer.removeChild(alert), 300);
+            }, 4000);
+        }
+
+        // Continue as guest function
+        function continueAsGuest() {
+            const guestUser = {
+                id: 'guest_' + Date.now(),
+                firstName: 'Guest',
+                lastName: 'User',
+                email: 'guest@portfolio.com',
+                isGuest: true,
+                loginTime: new Date().toISOString()
+            };
+            
+            localStorage.setItem('currentUser', JSON.stringify(guestUser));
+            showAlert('Welcome! You are browsing as a guest user. Redirecting...', 'success');
+            
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 1500);
+        }
+
+        // Form submission
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const rememberMe = document.getElementById('rememberMe').checked;
+
+            // Get registered users
+            const users = JSON.parse(localStorage.getItem('portfolioUsers') || '[]');
+            
+            // Find user by email and password
+            const user = users.find(u => u.email === email && u.password === password);
+
+            if (user) {
+                // Successful login
+                const loginUser = {
+                    ...user,
+                    loginTime: new Date().toISOString(),
+                    rememberMe: rememberMe
+                };
+                
+                delete loginUser.password; // Remove password from session
+                localStorage.setItem('currentUser', JSON.stringify(loginUser));
+                
+                showAlert(`Welcome back, ${user.firstName}! Redirecting to your profile...`, 'success');
+                
+                setTimeout(() => {
+                    window.location.href = 'user-profile.html';
+                }, 1500);
+            } else {
+                // Invalid credentials
+                showAlert('Invalid email or password. Please try again.', 'error');
+            }
+        });
+
+        // Load saved email if remember me was checked
+        window.addEventListener('load', function() {
+            const savedEmail = localStorage.getItem('rememberedEmail');
+            if (savedEmail) {
+                document.getElementById('email').value = savedEmail;
+                document.getElementById('rememberMe').checked = true;
+            }
+        });
+
+        // Save email if remember me is checked
+        document.getElementById('rememberMe').addEventListener('change', function() {
+            if (this.checked) {
+                const email = document.getElementById('email').value;
+                if (email) {
+                    localStorage.setItem('rememberedEmail', email);
+                }
+            } else {
+                localStorage.removeItem('rememberedEmail');
+            }
+        });
+    </script>
+</body>
+</html>

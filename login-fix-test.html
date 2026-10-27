@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login Fix Test</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            padding: 20px;
+        }
+        .test-container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+        input {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 10px rgba(102,126,234,0.3);
+        }
+        button {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .login-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102,126,234,0.4);
+        }
+        .clear-btn {
+            background: #dc3545;
+            color: white;
+        }
+        .fill-btn {
+            background: #28a745;
+            color: white;
+        }
+        .result {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: left;
+        }
+        .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .info { background: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h2>🔐 Admin Panel Login Fix</h2>
+        <p>Test এবং fix করুন admin login problem</p>
+        
+        <form id="testForm">
+            <input type="email" id="email" placeholder="Email: mdimranhossain1509@gmail.com" required>
+            <input type="password" id="password" placeholder="Password: ImRaN15092001" required>
+            
+            <button type="submit" class="login-btn">🚀 Test Login</button>
+        </form>
+        
+        <button onclick="fillForm()" class="fill-btn">📝 Auto Fill</button>
+        <button onclick="clearData()" class="clear-btn">🧹 Clear Data</button>
+        
+        <div id="result"></div>
+        
+        <div class="info" style="font-size: 14px; margin-top: 20px;">
+            <strong>✅ Correct Credentials:</strong><br>
+            📧 Email: mdimranhossain1509@gmail.com<br>
+            🔑 Password: ImRaN15092001
+        </div>
+        
+        <button onclick="openAdminPanel()" style="background: #007bff; color: white; margin-top: 15px;">
+            🌐 Open Admin Panel
+        </button>
+    </div>
+
+    <script>
+        function log(message, type = 'info') {
+            const result = document.getElementById('result');
+            result.innerHTML = `<div class="${type}"><strong>${new Date().toLocaleTimeString()}:</strong> ${message}</div>`;
+            console.log(message);
+        }
+
+        document.getElementById('testForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            
+            log('🔍 Testing credentials...');
+            console.log('Email:', email);
+            console.log('Password:', password);
+            console.log('Password length:', password.length);
+            
+            // Exact same check as admin panel
+            const correctEmail = 'mdimranhossain1509@gmail.com';
+            const correctPassword = 'ImRaN15092001';
+            
+            const emailMatch = email === correctEmail;
+            const passwordMatch = password === correctPassword;
+            
+            console.log('Email match:', emailMatch);
+            console.log('Password match:', passwordMatch);
+            
+            if (emailMatch && passwordMatch) {
+                localStorage.setItem('adminLoggedIn', 'true');
+                log('🎉 SUCCESS! Login works perfectly. You can now access admin panel.', 'success');
+                
+                // Store for admin panel
+                localStorage.setItem('testLoginSuccess', 'true');
+                localStorage.setItem('testEmail', email);
+                localStorage.setItem('testTime', new Date().toLocaleString());
+                
+            } else {
+                let errorMsg = '❌ LOGIN FAILED: ';
+                if (!emailMatch) errorMsg += 'Email incorrect. ';
+                if (!passwordMatch) errorMsg += 'Password incorrect. ';
+                errorMsg += `<br>📧 Expected: ${correctEmail}<br>🔑 Expected: ${correctPassword}`;
+                
+                log(errorMsg, 'error');
+            }
+        });
+
+        function fillForm() {
+            document.getElementById('email').value = 'mdimranhossain1509@gmail.com';
+            document.getElementById('password').value = 'ImRaN15092001';
+            log('📝 Credentials auto-filled!', 'info');
+        }
+
+        function clearData() {
+            localStorage.removeItem('adminLoggedIn');
+            localStorage.removeItem('adminPassword');
+            localStorage.removeItem('testLoginSuccess');
+            document.getElementById('email').value = '';
+            document.getElementById('password').value = '';
+            log('🧹 All data cleared! Form reset.', 'info');
+        }
+
+        function openAdminPanel() {
+            window.open('admin.html', '_blank');
+        }
+
+        // Auto-fill on load
+        fillForm();
+        log('🚀 Login fix test ready! Click "Test Login" to verify credentials.', 'info');
+    </script>
+</body>
+</html>
